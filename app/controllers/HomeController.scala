@@ -1,8 +1,8 @@
 package controllers
 
 import javax.inject._
-import models.Tables._
-import models.UserData
+import dao.AnnonsDAO
+import models.Annons
 import play.api._
 import play.api.data.Form
 import play.api.data.Forms._
@@ -17,16 +17,9 @@ import scala.concurrent.ExecutionContext.Implicits.global
  */
 
 @Singleton
-class HomeController @Inject() extends Controller {
+class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
 
   // Form stuff
-
-  val userForm = Form(
-    mapping(
-      "name" -> nonEmptyText,
-      "age" -> number(min = 0, max = 100)
-    )(UserData.apply)(UserData.unapply)
-  )
 
   val annonsForm = Form(
     mapping(
@@ -61,14 +54,14 @@ class HomeController @Inject() extends Controller {
 
   // DATABASE SETUP
   def setupdb = Action {
-    Annonser.setupdb
+    annonsDao.setupdb
     Ok("DB SETUP!")
   }
 
   // MAIN CONTROLLERS
   def index = Action.async {
     // val annonser = List(Annons(0, "upphittat", "Såg", "Hej jag hittade en såg i mitt garage!", Some(25)), Annons(1, "upphittat", "Katt", "En katt sprang in i mitt hus.", None), Annons(2, "borttappat", "Sax", "Hejsan text.", None))
-    val annonser = Annonser.getAll
+    val annonser = annonsDao.getAll
     annonser.map(a => Ok(views.html.index(a)))
   }
 
@@ -78,7 +71,7 @@ class HomeController @Inject() extends Controller {
 
   def annonsPage(id: Long) = Action.async {
     // Find annons by id
-    val annonser = Annonser.getAnnonsById(id)
+    val annonser = annonsDao.getAnnonsById(id)
     val annons = annonser.map(annonser => annonser.head)
     annons.map(a => Ok(views.html.annons(a)))
   }
@@ -92,7 +85,7 @@ class HomeController @Inject() extends Controller {
       },
       annons => {
         /* binding success, you get the actual value. */
-        Annonser.create(annons)
+        annonsDao.create(annons)
         println("Gick bra med formuläret")
         Redirect(routes.HomeController.index())flashing("message" -> "Annons skapad!")
       }
