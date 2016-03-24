@@ -1,0 +1,21 @@
+@(annonser: List[models.Tables.Annons])(implicit messages: Messages)
+
+@*
+ * Call the the `main` template with two arguments. The first
+ * argument is a `String` with the title of the page, the second
+ * argument is an `Html` object containing the body of the page.
+ *@
+@main("Welcome to Play") {
+
+    <h2>Annonser</h2>
+
+    Borttappat
+    <input type="checkbox" id="borttappat_checkbox">
+    Upphittat
+    <input type="checkbox" id="upphittat_checkbox">
+
+    @for(a <- annonser) {
+        @annons_listed(a)
+    }
+
+}

@@ -1,0 +1,22 @@
+@(annons: models.Tables.Annons)
+
+<div class="@annons.typ">
+    <div class="media">
+        <div class="media-left">
+            <a href="#">
+                <img class="media-object" src="@routes.Assets.versioned("images/a.jpg")" alt="..." height="42" width="42">
+            </a>
+        </div>
+        <div class="media-body">
+            <h4 class="media-heading"><a href="@routes.HomeController.annonsPage(annons.id.get)">@annons.rubrik</a></h4>
+            @if(annons.typ.equals("upphittat")){
+                <span class="label label-success">Upphittat</span>
+            }
+            @if(annons.typ.equals("borttappat")){
+                <span class="label label-primary">Borttappat</span>
+            }
+            <br>
+            @annons.text
+        </div>
+    </div>
+</div>
