@@ -10,5 +10,17 @@ case class Annons(
                    text: String,
                    hittelon: Option[Int],
                    coordslat: Option[BigDecimal],
-                   coordslng: Option[BigDecimal]
+                   coordslng: Option[BigDecimal],
+                   img: String
+                 )
+
+case class AnnonsForm(
+                   id: Option[Long],
+                   typ: String,
+                   rubrik: String,
+                   text: String,
+                   hittelon: Option[Int],
+                   coordslat: Option[BigDecimal],
+                   coordslng: Option[BigDecimal],
+                   img: Option[java.io.File]
                  )

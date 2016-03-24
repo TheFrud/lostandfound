@@ -29,12 +29,16 @@ class AnnonsDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
     def hittelon = column[Option[Int]]("ANNONS_HITTELON")
     def coordsLat = column[Option[BigDecimal]]("ANNONS_COORDS_LAT")
     def coordsLng = column[Option[BigDecimal]]("ANNONS_COORDS_LNG")
+    def img = column[String] ("ANNONS_IMG")
 
     // def * = (id.?, name, age)
-    def * = (id.?, typ, rubrik, text, hittelon, coordsLat, coordsLng) <> (Annons.tupled, Annons.unapply)
+    def * = (id.?, typ, rubrik, text, hittelon, coordsLat, coordsLng, img) <> (Annons.tupled, Annons.unapply)
   }
 
+  val defaultImgPath = "default.jpg"
+
   def setupdb = {
+
     try{
 
       val setup = DBIO.seq(
@@ -42,11 +46,11 @@ class AnnonsDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
         annonser.schema.create,
 
         annonser ++= Seq(
-          Annons(None, "upphittat", "Häst hittad!", "Hittade en häst på gården...", None, None, None),
-          Annons(None, "borttappat", "Katt bortsprungen", "Kära Elsa är bortsprungen. Hjälp mig hitta henne.", None, None, None),
-          Annons(None, "upphittat", "Väska", "En väska!", None, None, None),
-          Annons(None, "borttappat", "Ring", "Tappade bort en ring. :(", None, None, None),
-          Annons(None, "borttappat", "Kraftrör", "Kraftrör säger jag bara. Hjälp mig hitta det plx!", None, None, None)
+          Annons(None, "upphittat", "Häst hittad!", "Hittade en häst på gården...", None, None, None, defaultImgPath),
+          Annons(None, "borttappat", "Katt bortsprungen", "Kära Elsa är bortsprungen. Hjälp mig hitta henne.", None, None, None, defaultImgPath),
+          Annons(None, "upphittat", "Väska", "En väska!", None, None, None, defaultImgPath),
+          Annons(None, "borttappat", "Ring", "Tappade bort en ring. :(", None, None, None, defaultImgPath),
+          Annons(None, "borttappat", "Kraftrör", "Kraftrör säger jag bara. Hjälp mig hitta det plx!", None, None, None, defaultImgPath)
         )
 
       )

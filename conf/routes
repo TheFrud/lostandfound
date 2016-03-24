@@ -19,6 +19,7 @@ GET     /message                    controllers.AsyncController.message
 
 # Annons
 POST      /postannons               controllers.HomeController.postAnnons
+GET       /getannonser              controllers.HomeController.getAnnonser
 
 # Image upload
 POST  /                              controllers.HomeController.upload()

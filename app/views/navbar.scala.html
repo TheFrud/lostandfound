@@ -1,4 +1,21 @@
-<ul class="nav nav-tabs">
-    <li role="presentation" class="active"><a href="@routes.HomeController.index()">Annonser</a></li>
-    <li role="presentation"><a href="@routes.HomeController.laggTillAnnons()">Lägg till annons</a></li>
-</ul>
+@(title: String)
+@if(title.equals("Annonser")){
+    <div id="page" hidden>Annonser</div>
+    <button type="button" class="btn btn-primary btn-lg" id="toggleModeButton"></button>
+    <button type="button" class="btn btn-secondary btn-lg" id="skapaAnnonsButton" onclick="location.href='@routes.HomeController.laggTillAnnons()';">Skapa annons</button>
+}
+
+@if(title.equals("Skapa annons")) {
+    <div id="page" hidden>Skapa annons</div>
+    <button type="button" class="btn btn-secondary btn-lg" id="laggTillAnnonsVersionToggleModeButton" onclick="location.href='@routes.HomeController.index()';"></button>
+    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='@routes.HomeController.laggTillAnnons()';">Skapa annons</button>
+}
+
+@if(title.equals("Annons")) {
+    <div id="page" hidden>Annons</div>
+    <button type="button" class="btn btn-secondary btn-lg" id="laggTillAnnonsVersionToggleModeButton" onclick="location.href='@routes.HomeController.index()';"></button>
+    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='@routes.HomeController.laggTillAnnons()';">Skapa annons</button>
+}
+<span>
+<img src="@routes.Assets.versioned("images/annons_imgs/default.jpg")" alt="..." height="42" width="42">
+</span>
