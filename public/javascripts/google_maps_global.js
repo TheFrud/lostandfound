@@ -31,16 +31,43 @@ function getAnnonser() {
 
         data.annonser.forEach(function(item){
 
+            // Tittar ifall annonsen innehåller koordinater.
+            // Annars är ju markörer irrelevant.
             if(item.hasOwnProperty('coordslat') && item.hasOwnProperty("coordslng")){
-                console.log("Inside item");
+
                 var itemLatLng = new google.maps.LatLng(item.coordslat, item.coordslng);
-                marker = new google.maps.Marker({
+                var marker = new google.maps.Marker({
                     position: itemLatLng,
                     map: map,
                     draggable:false,
                     title: item.rubrik
-                });  
+                });
+
+                // Set marker color
+                if(item.typ === "borttappat") {
+                    marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png')
+                }
+
+                else if(item.typ === "upphittat") {
+                    marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png')   
+                }
+                
+                // Gör så att en inforuta kommer upp när man klickar på markören.
+                var contentString = "<h3>" + item.rubrik + "</h3>" + 
+                "<img class='media-object' src='/assets/images/annons_imgs/"+item.img+"' alt='...' height='42' width='42'>" +
+                 "<br>" + item.text;
+
+                var infowindow = new google.maps.InfoWindow({
+                    content: contentString
+                });
+
+                marker.addListener('click', function() {
+                    infowindow.open(map, marker);
+                });    
+
             }
+
+
 
         })
 
