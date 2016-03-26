@@ -53,7 +53,7 @@ function getAnnonser() {
                 }
                 
                 // Gör så att en inforuta kommer upp när man klickar på markören.
-                var contentString = "<h3>" + item.rubrik + "</h3>" + 
+                var contentString = "<h3><a href='http://192.168.1.45:9000/annons/"+item.id+"'>" + item.rubrik + "</a></h3>" + 
                 "<img class='media-object' src='/assets/images/annons_imgs/"+item.img+"' alt='...' height='42' width='42'>" +
                  "<br>" + item.text;
 

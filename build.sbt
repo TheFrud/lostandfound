@@ -14,7 +14,8 @@ libraryDependencies ++= Seq(
   "org.webjars" % "bootstrap" % "4.0.0-alpha.2",
   "com.typesafe.play" %% "play-slick" % "1.1.1",
   "com.typesafe.play" %% "play-slick-evolutions" % "1.1.1",
-  "org.postgresql" % "postgresql" % "9.4-1201-jdbc41"
+  "org.postgresql" % "postgresql" % "9.4-1201-jdbc41",
+  "org.mindrot" % "jbcrypt" % "0.3m"
 )
 
 resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"

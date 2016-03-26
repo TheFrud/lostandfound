@@ -8,6 +8,11 @@ import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
 // import slick.driver.H2Driver.api._
 import javax.inject.Inject
+import java.sql.Date
+import java.util.Date
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
+import java.io.UnsupportedEncodingException
 
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 
@@ -30,15 +35,26 @@ class AnnonsDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
     def coordsLat = column[Option[BigDecimal]]("ANNONS_COORDS_LAT")
     def coordsLng = column[Option[BigDecimal]]("ANNONS_COORDS_LNG")
     def img = column[String] ("ANNONS_IMG")
+    def date = column[java.sql.Date] ("ANNONS_DATE")
+    def category = column[String] ("ANNONS_CATEGORY")
+    def county = column[String] ("ANNONS_COUNTY")
+    def uploader_name = column[String] ("ANNONS_UPLOADER_NAME")
+    def uploader_phone = column[String] ("ANNONS_UPLOADER_PHONE")
+    def uploader_email = column[String] ("ANNONS_UPLOADER_EMAIL")
+    def uploader_password = column[String] ("ANNONS_UPLOADER_PASSWORD")
 
     // def * = (id.?, name, age)
-    def * = (id.?, typ, rubrik, text, hittelon, coordsLat, coordsLng, img) <> (Annons.tupled, Annons.unapply)
+    def * = (id.?, typ, rubrik, text, hittelon, coordsLat, coordsLng, img, date, category, county, uploader_name, uploader_phone, uploader_email, uploader_password) <> (Annons.tupled, Annons.unapply)
   }
 
+  // Default image
   val defaultImgPath = "default.jpg"
 
-  def setupdb = {
+  // Default time
+  val currentDateGetter = new java.util.Date
+  val defaultDate = new java.sql.Date(currentDateGetter.getTime())
 
+  def setupdb = {
     try{
 
       val setup = DBIO.seq(
@@ -46,11 +62,11 @@ class AnnonsDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
         annonser.schema.create,
 
         annonser ++= Seq(
-          Annons(None, "upphittat", "Häst hittad!", "Hittade en häst på gården...", None, None, None, defaultImgPath),
-          Annons(None, "borttappat", "Katt bortsprungen", "Kära Elsa är bortsprungen. Hjälp mig hitta henne.", None, None, None, defaultImgPath),
-          Annons(None, "upphittat", "Väska", "En väska!", None, None, None, defaultImgPath),
-          Annons(None, "borttappat", "Ring", "Tappade bort en ring. :(", None, None, None, defaultImgPath),
-          Annons(None, "borttappat", "Kraftrör", "Kraftrör säger jag bara. Hjälp mig hitta det plx!", None, None, None, defaultImgPath)
+          Annons(None, "upphittat", "Häst hittad!", "Hittade en häst på gården...", None, None, None, defaultImgPath, defaultDate, "Djur", "Gävleborgs län", "Fredrik Johansson", "0702915403", "thefrud@gmail.com", MyHash.createPassword("password1")),
+          Annons(None, "borttappat", "Katt bortsprungen", "Kära Elsa är bortsprungen. Hjälp mig hitta henne.", None, None, None, defaultImgPath, defaultDate, "Mobiltelefon", "Tuborgs län", "Fredrik Johansson", "0702915403", "thefrud@gmail.com", MyHash.createPassword("password2")),
+          Annons(None, "upphittat", "Väska", "En väska!", None, None, None, defaultImgPath, defaultDate, "Djur", "Gävleborgs län", "Fredrik Johansson", "0702915403", "thefrud@gmail.com", MyHash.createPassword("password3")),
+          Annons(None, "borttappat", "Ring", "Tappade bort en ring. :(", None, None, None, defaultImgPath, defaultDate, "Djur", "Kritvita län", "Fredrik Johansson", "0702915403", "thefrud@gmail.com", MyHash.createPassword("password4")),
+          Annons(None, "borttappat", "Kraftrör", "Kraftrör säger jag bara. Hjälp mig hitta det plx!", None, None, None, defaultImgPath, defaultDate, "Mobiltelefon", "Dagukar län", "Fredrik Johansson", "0702915403", "thefrud@gmail.com", MyHash.createPassword("password5"))
         )
 
       )
@@ -68,6 +84,16 @@ class AnnonsDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
 
   }
 
+  def remove(id: Long): Future[Int] = {
+    try {
+      val q = annonser.filter(_.id === id)
+      val action = q.delete
+      val affectedRowsCount: Future[Int] = db.run(action)
+      val sql = action.statements.head
+      affectedRowsCount
+    } finally 1
+  }
+
   def getAll: Future[List[Annons]] = {
     try{
       val query = annonser.result
@@ -78,6 +104,22 @@ class AnnonsDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
     }finally 1
   }
 
+  def getAllNoPasswords: Future[List[Annons]] = {
+    try{
+      val query = annonser.result
+      val future = db.run(query)
+      val list = future.map(f => f.toList)
+
+      // Remove the password from the list items
+      val listNoPasswords = list.map {list => list.map {item => Annons(item.id, item.typ, item.rubrik, item.text, item.hittelon,
+        item.coordslat, item.coordslng, item.img, item.date, item.category, item.county,
+        item.uploader_name, item.uploader_phone, item.uploader_email, "") } }
+
+      // Return the list
+      listNoPasswords
+
+    }finally 1
+  }
 
   def getAnnonsById(id: Long): Future[List[Annons]] = {
     try{

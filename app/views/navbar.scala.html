@@ -1,8 +1,21 @@
 @(title: String)
+
+<div class="row">
+
 @if(title.equals("Annonser")){
     <div id="page" hidden>Annonser</div>
-    <button type="button" class="btn btn-primary btn-lg" id="toggleModeButton"></button>
-    <button type="button" class="btn btn-secondary btn-lg" id="skapaAnnonsButton" onclick="location.href='@routes.HomeController.laggTillAnnons()';">Skapa annons</button>
+
+    <div class="col-xs-3">
+        <button type="button" class="btn btn-primary btn-lg" id="toggleModeButton"></button>
+    </div>
+
+    <div class="col-xs-3"></div>
+
+    <div class="col-xs-3"></div>
+
+    <div class="col-xs-3">
+        <button type="button" class="btn btn-secondary btn-lg" id="skapaAnnonsButton" onclick="location.href='@routes.HomeController.laggTillAnnons()';">Skapa annons</button>
+    </div>
 }
 
 @if(title.equals("Skapa annons")) {
@@ -16,6 +29,8 @@
     <button type="button" class="btn btn-secondary btn-lg" id="laggTillAnnonsVersionToggleModeButton" onclick="location.href='@routes.HomeController.index()';"></button>
     <button type="button" class="btn btn-primary btn-lg" onclick="location.href='@routes.HomeController.laggTillAnnons()';">Skapa annons</button>
 }
+
+</div>
 @*Logo HERE*@
 @*
 <span>

@@ -8,7 +8,7 @@ GET     /setupdb                    controllers.HomeController.setupdb
 # Navigation
 GET     /                           controllers.HomeController.index
 GET     /laggtillannons             controllers.HomeController.laggTillAnnons
-GET     /annonssida          controllers.HomeController.annonsPage(id: Long)
+GET     /annons/:id                 controllers.HomeController.annonsPage(id: Long)
 
 # An example controller showing how to use dependency injection
 GET     /count                      controllers.CountController.count
@@ -20,6 +20,7 @@ GET     /message                    controllers.AsyncController.message
 # Annons
 POST      /postannons               controllers.HomeController.postAnnons
 GET       /getannonser              controllers.HomeController.getAnnonser
+POST      /removeannons             controllers.HomeController.removeAnnons(id: Long)
 
 # Image upload
 POST  /                              controllers.HomeController.upload()

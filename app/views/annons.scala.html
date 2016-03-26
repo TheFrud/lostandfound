@@ -1,4 +1,4 @@
-@(annons: models.Annons)
+@(annons: models.Annons, removeAnnonsForm: Form[RemoveAnnonsForm])(implicit messages: Messages)
 @*
 Google Maps Stuff
 *@
@@ -26,12 +26,20 @@ defer></script>
     <div id="lat">@annons.coordslat</div>
     <div id="lng">@annons.coordslng</div>
     <br>
+    @helper.form(action = routes.HomeController.removeAnnons(annons.id.get)) {
+
+        @helper.inputPassword(removeAnnonsForm("password"))
+
+        <input type="submit">
+    }
+    <br>
+
     @*
     Checks if the 'annons' got map coordinates.
     Create map div if it does.
     *@
     @if(annons.coordslat.nonEmpty){
-        <div id="map" style="width:100%; height:100%;"></div>
+        <div id="map"></div>
     }
 
 
