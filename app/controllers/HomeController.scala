@@ -185,9 +185,13 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
         // Encrypt password
         val encrypted_password = MyHash.createPassword(annons.uploader_password)
 
+        // Check if an image was uploaded
+        // If not the standard image will be used.
+        val image = if(annons.img.equals("")) annonsDao.defaultImg else annons.img
+
         // Combine the file and form data...
         val annonsToSave = Annons(annons.id, annons.typ, annons.rubrik, annons.text, annons.hittelon,
-          annons.coordslat, annons.coordslng, annons.img, annons.date, annons.category, annons.county,
+          annons.coordslat, annons.coordslng, image, annons.date, annons.category, annons.county,
           annons.uploader_name, annons.uploader_phone, annons.uploader_email, encrypted_password)
 
         // Saving annons to database

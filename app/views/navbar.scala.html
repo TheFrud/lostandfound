@@ -11,7 +11,10 @@
 
     @if(title.equals("Skapa annons")) {
         <div id="page" hidden>Skapa annons</div>
-
+        @*
+        <a class="btn btn-danger" href="#" onclick="location.href='@routes.HomeController.index()';">
+            <i class="fa fa-trash-o fa-lg"></i> Delete</a>
+        *@
         <button type="button" class="btn btn-secondary btn-lg" id="laggTillAnnonsVersionToggleModeButton" onclick="location.href='@routes.HomeController.index()';"></button>
         <button type="button" class="btn btn-primary btn-lg" id="skapaAnnonsButtonClicked" onclick="location.href='@routes.HomeController.laggTillAnnons()';">Skapa annons</button>
     }

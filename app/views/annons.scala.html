@@ -28,8 +28,9 @@ defer></script>
     <br>
     @helper.form(action = routes.HomeController.removeAnnons(annons.id.get)) {
 
-        @helper.inputPassword(removeAnnonsForm("password"))
-
+        @helper.inputPassword(removeAnnonsForm("password"), '_showConstraints -> false, '_label -> null)
+        <a class="btn btn-danger" href="#">
+            <i class="fa fa-trash-o fa-lg"></i> Delete</a>
         <input type="submit">
     }
     <br>

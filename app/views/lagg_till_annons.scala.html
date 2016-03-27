@@ -14,26 +14,8 @@ defer></script>
 
     @main("Skapa annons") {
 
-        <form id="form_upload_img">
-                <!-- Ladda upp bild -->
 
-            <div class="form-group row">
-                <label for="file" class="col-sm-1 form-control-label">Bild</label>
-                <div class="col-sm-11">
-                    <label class="file">
-                        <input type="file" name="img" id="file">
-                        <span class="file-custom"></span>
-                    </label>
-                </div>
-            </div>
-
-            <button id="upload_img">Ladda upp bild</button>
-        </form>
-        <br>
-        <br>
-        <br>
-
-        @helper.form(action = routes.HomeController.postAnnons()) {
+        @helper.form(action = routes.HomeController.postAnnons(), 'id -> "annons_form") {
             <div id="form_panel">
                     <!-- HUVUDPANEL -->
 
@@ -41,6 +23,34 @@ defer></script>
 
                     <legend><i class="fa fa-sticky-note"></i> Annons</legend>
                     xzasdsadsadsadasdas...
+
+                    <!-- Ladda upp bild -->
+                    <div class="form-group row">
+                        <label for="file" class="col-sm-1 form-control-label">Bild</label>
+                        <div class="col-sm-11">
+                            <label class="file">
+                                <input type="file" name="img" id="file">
+                                <span class="file-custom"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="uploaded_image"></div>
+
+                    <progress id="progress_bar" style="display: none"></progress>
+
+                    <div class="alert alert-danger" role="alert" id="img_upload_failure" style="display:none;">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span class="sr-only">Error:</span>
+                        DAERROR
+                    </div>
+
+                    <div class="alert alert-success" role="alert" id="img_upload_succeess" style="display:none;">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span class="sr-only">YAy!:</span>
+                        SUCCESSEN
+                    </div>
+
                     <!-- Typ -->
                     <div class="form-group row">
                         <label for="typ" class="col-sm-1 form-control-label">Typ</label>
@@ -197,7 +207,8 @@ defer></script>
                 @helper.inputText(annonsForm("img"), 'id -> "img_path", '_label -> null, 'hidden -> "true", '_showConstraints -> false)
 
                     <!-- Submit button -->
-                <button type="submit" class="btn btn-primary">Skapa annons</button>
+                <button type="submit" class="btn btn-primary" id="form_submit_button">Skapa annons</button>
+                <div id="form_submit_spinner" style="display: none"><i class="fa fa-refresh fa-spin" ></i></div>
             </div>
         }
 

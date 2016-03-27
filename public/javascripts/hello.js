@@ -144,18 +144,28 @@ $(document).ready(function(){
 	// Init when the page loads
 	setFormType();
 
+
+
+	/*
+	-------------------------------------------
+	*/
+
 	// IMAGE UPLOAD CODE (have to be cleaned up)
-	var form = document.getElementById('form_upload_img');
+	// var form = document.getElementById('form_upload_img');
 	var fileSelect = document.getElementById('file');
-	var uploadButton = document.getElementById('upload_img');
+	// var uploadButton = document.getElementById('upload_img');
 	var hiddenForm = document.getElementById('img_path');
+	var uploaded_image_div = document.getElementById("uploaded_image");
+	var img_upload_failure_div = document.getElementById("img_upload_failure");
+	var img_upload_succeess_div = document.getElementById("img_upload_succeess");
+	var progress_bar = document.getElementById("progress_bar");
 
 
-	form.onsubmit = function(event) {
+	fileSelect.onchange = function(event) {
 		event.preventDefault();
 
-		// Update button text.
-		uploadButton.innerHTML = 'Laddar upp...';
+		// Show progress_bar
+		progress_bar.style.display = "block";
 
 		// The rest of the code will go here...
 
@@ -183,22 +193,66 @@ $(document).ready(function(){
 			xhr.onload = function () {
 			  if (xhr.status === 200) {
 			    // File(s) uploaded.
-			    uploadButton.innerHTML = 'Bild uppladdad!';
+			    // Hide progress_bar
+				progress_bar.style.display = "none";
+			
 			    hiddenForm.value = xhr.responseText;
 
+			    var contentString = "<br><img class='media-object' src='/assets/images/annons_imgs/"+xhr.responseText+"' alt='...' height='42' width='42'><br>"
+			    
+				var server_success_msg = "Bild uppladdad!";
+			    uploaded_image_div.innerHTML = contentString;
+			    uploaded_image_div.style.visibility = "visible";
+			    img_upload_succeess_div.style.display =  "block";
+			    img_upload_failure_div.style.display = "none";
+			    img_upload_succeess_div.innerHTML = server_success_msg;
+			    console.log(server_success_msg);
+
+
 			  } else {
-			    console.log("Could not upload image!");
+			  	// Hide progress_bar
+				progress_bar.style.display = "none";
+			    var server_fail_msg = "Kunde inte ladda upp bild!";
+			    img_upload_succeess_div.style.display =  "none";
+			    img_upload_failure_div.style.display = "block";
+			    img_upload_failure_div.innerHTML = server_fail_msg;
+				console.log(server_fail_msg);
+
 			  }
 			};		
 			
 			// Send the Data.
 			xhr.send(formData);    
 		} else {
-			uploadButton.innerHTML = 'Fel filtyp! Du måste välja en bild.';
-			console.log("Wrong file type!");
+			// Hide progress_bar
+			progress_bar.style.display = "none";
+
+			var wrong_filetyp_msg = 'Fel filtyp! Du måste välja en bild.';
+			img_upload_succeess_div.style.display =  "none";
+			img_upload_failure_div.style.display = "block";
+			img_upload_failure_div.innerHTML = wrong_filetyp_msg;
+			console.log(wrong_filetyp_msg);
 		}
 
 
 	}
+
+
+	
+	/*
+	-------------------------- FORM SUBMIT (LOADING SPINNER)
+	Funkar nog inte pg a att jag inte kör med Ajax:
+	Sidan dör ju typ direkt efter att man klickat på submit i detta fall...
+	*/
+
+	/*
+	const form_submit_button = document.getElementById("form_submit_button");
+	const form_submit_spinner = document.getElementById("form_submit_spinner");
+
+	$("#annons_form").submit(function() {
+		form_submit_spinner.style.display = "block";
+	})
+	*/
+
 	
 })

@@ -9,36 +9,44 @@ defer></script>
 
 @main("Annonser") {
 
-    <div class="row" id="mapView">
-        <div class="col-xs-1">
-        </div>
-        <div class="col-xs-10">
-            <div id="map" ></div>
-        </div>
-        <div class="col-xs-1">
-        </div>
-    </div>
+    <div id="index_views">
 
-    <div class="row" id="listView" style="display:none">
-        <div class="col-md-12">
-            <h2>Annonser</h2>
-            @if(flash.get("failure")){
-                <div class="alert alert-danger" role="alert">
-                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                    <span class="sr-only">Error:</span>
-                    @flash.get("failure")
+        <div class="row" id="mapView">
+            <div class="col-xs-1">
+            </div>
+            <div class="col-xs-10">
+                <div id="map" ></div>
+            </div>
+            <div class="col-xs-1">
+            </div>
+        </div>
+
+        <div class="row" id="listView" style="display:none">
+            <div class="col-md-12">
+                <div id="annonser_heading">
+                    @*
+                        Empty for now
+                    *@
                 </div>
-            }
+                @if(flash.get("failure")){
+                    <div class="alert alert-danger" role="alert">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span class="sr-only">Error:</span>
+                        @flash.get("failure")
+                    </div>
+                }
 
-            Borttappat
-            <input type="checkbox" id="borttappat_checkbox">
-            Upphittat
-            <input type="checkbox" id="upphittat_checkbox">
+                Borttappat
+                <input type="checkbox" id="borttappat_checkbox">
+                Upphittat
+                <input type="checkbox" id="upphittat_checkbox">
 
-            @for(a <- annonser) {
-                @annons_listed(a)
-            }
+                @for(a <- annonser) {
+                    @annons_listed(a)
+                }
+            </div>
         </div>
+
     </div>
 
 
