@@ -3,10 +3,22 @@ body {
 	background-color: lightblue;
 }
 
+/* FORM FIELDS */
+input:required {
+	/* border: 1px solid blue; */
+}
+input:valid {
+	/* border: 1px solid green; */
+}
+input:invalid {
+	/* border: 1px solid red; */
+}
+
 #uploader_info_panel {
     border-radius: 7px;
     border: 1px solid #F7F7F9;
-    padding: 10px; 
+    padding: 20px; 
+    background-color: white;
     /*margin: 20px;*/
 }
 
@@ -14,19 +26,54 @@ body {
     border-radius: 7px;
     border: 1px solid #F7F7F9;
     padding: 10px; 
+    background-color: #EDEFF0;
     /*margin: 20px;*/
 }
 
 #object_panel {
     border-radius: 7px;
     border: 1px solid #F7F7F9;
-    padding: 10px; 
+    padding: 20px; 
+    background-color: white;
     /*margin: 20px;*/
 }
 
 #password_panel {
     border-radius: 7px;
     border: 1px solid #F7F7F9;
-    padding: 10px; 
+    padding: 20px; 
+    background-color: white;
     /*margin: 20px;*/
 }
+
+#nav_bar {
+    border-radius: 7px;
+    border: 1px;
+    padding: 10px; 
+    background-color: white;
+}
+
+
+/*
+Greens
+
+Idle
+#56A23F
+Clicked
+#5DB248
+---
+
+Blue 
+Navbar Neutral
+#0E74AF
+
+Button
+Idle
+xxx
+#4C94BE
+Clicked
+xxx
+#66A4C7
+
+---
+*/

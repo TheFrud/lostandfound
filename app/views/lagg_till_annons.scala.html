@@ -1,5 +1,4 @@
-@import models.Annons
-@(annonsForm: Form[AnnonsForm])(implicit messages: Messages)
+@(annonsForm: Form[Annons])(implicit messages: Messages)
 
     @*
     Google Maps Stuff
@@ -13,118 +12,11 @@ defer></script>
 
 
 
-@main("Skapa annons") {
-@*      "id" -> optional(longNumber),
-"typ" -> text,
-"rubrik" -> text,
-"text" -> text,
-"hittelon" -> optional(number),
-"coordslat" -> optional(bigDecimal),
-"coordslng" -> optional(bigDecimal),
-"img" -> ignored(Option.empty[java.io.File]),
-"date" -> sqlDate,
-"category" -> text,
-"county" -> text,
-"uploader_name" -> text,
-"uploader_phone" -> text,
-"uploader_email" -> text,
-"uploader_password" -> text
-    *@
+    @main("Skapa annons") {
 
-    <div id="form_panel">
-    @helper.form(action = routes.HomeController.postAnnons(),  'enctype -> "multipart/form-data") {
+        <form id="form_upload_img">
+                <!-- Ladda upp bild -->
 
-        <!-- HUVUDPANEL -->
-
-        <div id="object_panel">
-
-            <legend>Annons</legend>
-            xzasdsadsadsadasdas...
-            <!-- Typ -->
-            <div class="form-group row">
-                <label for="typ" class="col-sm-1 form-control-label">Typ</label>
-                <div class="col-sm-11">
-                    @helper.select(
-                        field = annonsForm("typ"),
-                        options = Seq(
-                            "borttappat" -> "Borttappat",
-                            "upphittat" -> "Upphittat"
-                        ),
-                        'default -> "Välj typ",
-                        'class -> "c-select",
-                        '_label -> null
-                    )
-                </div>
-            </div>
-
-            <!-- Rubrik -->
-            <div class="form-group row">
-                <label for="rubrik" class="col-sm-1 form-control-label">Rubrik</label>
-                <div class="col-sm-11">
-                    @helper.inputText(annonsForm("rubrik"), 'id -> "rubrik", 'placeholder -> "Rubrik", '_label -> null )
-                </div>
-            </div>
-
-            <!-- Beskrivning-->
-            <div class="form-group row">
-                <label for="text" class="col-sm-1 form-control-label">Beskrivning</label>
-                <div class="col-sm-11">
-                    @helper.textarea(annonsForm("text"), '_label -> null, 'id -> "text")
-                </div>
-            </div>
-
-            <!-- Datum -->
-            <div class="form-group row">
-                <label for="datum" class="col-sm-1 form-control-label">Datum</label>
-                <div class="col-sm-11">
-                    @helper.inputDate(annonsForm("date"), '_label -> null, 'id -> "datum", '_showConstraints -> false)
-                </div>
-            </div>
-
-            <!-- Kategori -->
-            <div class="form-group row">
-                <label for="category" class="col-sm-1 form-control-label">Kategori</label>
-                <div class="col-sm-11">
-                    @helper.select(
-                        field = annonsForm("category"),
-                        options = Seq(
-                            "Djur" -> "Djur",
-                            "Mobiltelefon" -> "Mobiltelefon"
-                        ),
-                        'default -> "Välj kategori",
-                        '_label -> null,
-                        'class -> "form-control",
-                        'id -> "category"
-                    )
-                </div>
-            </div>
-
-            <!-- Län -->
-            <div class="form-group row">
-                <label for="county" class="col-sm-1 form-control-label">Län</label>
-                <div class="col-sm-11">
-                    @helper.select(
-                        field = annonsForm("county"),
-                        options = Seq(
-                            "Gävleborgs län" -> "Gävleborgs län",
-                            "Stefansbergs län" -> "Stefansbergs län"
-                        ),
-                        'default -> "Välj län",
-                        '_label -> null,
-                        'id -> "county"
-                    )
-                </div>
-            </div>
-
-            <!-- Hittelön -->
-            <div class="form-group row">
-                <label for="hittelon" class="col-sm-1 form-control-label">Hittelön</label>
-                <div class="col-sm-11">
-                    @helper.inputText(annonsForm("hittelon"), '_label -> null, 'type -> "number", '_showConstraints -> false, 'id -> "hittelon")
-                </div>
-            </div>
-
-            <!-- Ladda upp bild -->
             <div class="form-group row">
                 <label for="file" class="col-sm-1 form-control-label">Bild</label>
                 <div class="col-sm-11">
@@ -135,86 +27,179 @@ defer></script>
                 </div>
             </div>
 
-            <!-- Karta -->
-            <label>Var xxx du den?</label>
-            <div class="row">
-                <div class="col-sm-4">
-                    <div id="map"></div>
+            <button id="upload_img">Ladda upp bild</button>
+        </form>
+        <br>
+        <br>
+        <br>
+
+        @helper.form(action = routes.HomeController.postAnnons()) {
+            <div id="form_panel">
+                    <!-- HUVUDPANEL -->
+
+                <div id="object_panel">
+
+                    <legend><i class="fa fa-sticky-note"></i> Annons</legend>
+                    xzasdsadsadsadasdas...
+                    <!-- Typ -->
+                    <div class="form-group row">
+                        <label for="typ" class="col-sm-1 form-control-label">Typ</label>
+                        <div class="col-sm-11">
+                        @helper.select(
+                            field = annonsForm("typ"),
+                            options = Seq(
+                                "borttappat" -> "Borttappat",
+                                "upphittat" -> "Upphittat"
+                            ),
+                            'default -> "Välj typ",
+                            'class -> "c-select",
+                            '_label -> null,
+                            'id -> "typ",
+                            'autofocus -> true
+                        )
+                        </div>
+                    </div>
+
+                        <!-- Rubrik -->
+                    <div class="form-group row">
+                        <label for="rubrik" class="col-sm-1 form-control-label">Rubrik</label>
+                        <div class="col-sm-11">
+                        @helper.inputText(annonsForm("rubrik"), 'id -> "rubrik", '_label -> null, 'required -> true, 'maxlength -> 40, 'size -> 25)
+                        </div>
+                    </div>
+
+                        <!-- Beskrivning-->
+                    <div class="form-group row">
+                        <label for="text" class="col-sm-1 form-control-label">Beskrivning</label>
+                        <div class="col-sm-11">
+                        @helper.textarea(annonsForm("text"), '_label -> null, 'id -> "text", 'rows -> 4, 'cols -> 35)
+                        </div>
+                    </div>
+
+                        <!-- Datum -->
+                    <div class="form-group row">
+                        <label for="datum" class="col-sm-1 form-control-label">Datum</label>
+                        <div class="col-sm-11">
+                        @helper.inputDate(annonsForm("date"), '_label -> null, 'id -> "datum", '_showConstraints -> false)
+                        </div>
+                    </div>
+
+                        <!-- Kategori -->
+                    <div class="form-group row">
+                        <label for="category" class="col-sm-1 form-control-label">Kategori</label>
+                        <div class="col-sm-11">
+                        @helper.select(
+                            field = annonsForm("category"),
+                            options = Seq(
+                                "Djur" -> "Djur",
+                                "Mobiltelefon" -> "Mobiltelefon"
+                            ),
+                            'default -> "Välj kategori",
+                            '_label -> null,
+                            'class -> "form-control",
+                            'id -> "category"
+                        )
+                        </div>
+                    </div>
+
+                        <!-- Län -->
+                    <div class="form-group row">
+                        <label for="county" class="col-sm-1 form-control-label">Län</label>
+                        <div class="col-sm-11">
+                        @helper.select(
+                            field = annonsForm("county"),
+                            options = Seq(
+                                "Gävleborgs län" -> "Gävleborgs län",
+                                "Stefansbergs län" -> "Stefansbergs län"
+                            ),
+                            'default -> "Välj län",
+                            '_label -> null,
+                            'class -> "form-control",
+                            'id -> "county"
+                        )
+                        </div>
+                    </div>
+
+                        <!-- Hittelön -->
+                    <div class="form-group row" id="hittelon_div">
+                        <label for="hittelon" class="col-sm-1 form-control-label">Hittelön</label>
+                        <div class="col-sm-11">
+                        @helper.inputText(annonsForm("hittelon"), '_label -> null, 'placeholder -> "Valfritt...", 'type -> "number", '_showConstraints -> false, 'id -> "hittelon")
+                        </div>
+                    </div>
+
+
+                        <!-- Karta -->
+                    <label>Var <span id="fillThis">...</span> objektet?</label>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div id="map"></div>
+                        </div>
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-4"></div>
+                    </div>
                 </div>
-                <div class="col-sm-4"></div>
-                <div class="col-sm-4"></div>
-            </div>
-        </div>
 
-        <!-- END OF HUVUDPANEL-->
+                    <!-- END OF HUVUDPANEL-->
 
-        <!-- DINA KONTAKTUPPGIFTER -->
+                    <!-- DINA KONTAKTUPPGIFTER -->
 
-        <div id="uploader_info_panel">
-            <legend>Dina kontaktuppgifter</legend>
-            dsadasdsdadasdasdsa...
-            <!-- Namn -->
-            <div class="form-group row">
-                <label for="uploader_name" class="col-sm-1 form-control-label">Namn</label>
-                <div class="col-sm-11">
-                    @helper.inputText(annonsForm("uploader_name"), '_label -> null, 'id -> "uploader_name")
+                <div id="uploader_info_panel">
+                    <legend><i class="fa fa-user"></i> Dina kontaktuppgifter</legend>
+                    dsadasdsdadasdasdsa...
+                    <!-- Namn -->
+                    <div class="form-group row">
+                        <label for="uploader_name" class="col-sm-1 form-control-label">Namn</label>
+                        <div class="col-sm-11">
+                        @helper.inputText(annonsForm("uploader_name"), '_label -> null, 'id -> "uploader_name")
+                        </div>
+                    </div>
+
+                        <!-- Telefon -->
+                    <div class="form-group row">
+                        <label for="uploader_phone" class="col-sm-1 form-control-label">Telefon</label>
+                        <div class="col-sm-11">
+                        @helper.inputText(annonsForm("uploader_phone"), '_label -> null, 'type -> "tel", 'id -> "uploader_phone")
+                        </div>
+                    </div>
+
+                        <!-- E-post -->
+                    <div class="form-group row">
+                        <label for="uploader_email" class="col-sm-1 form-control-label">E-post</label>
+                        <div class="col-sm-11">
+                        @helper.inputText(annonsForm("uploader_email"), '_label -> null, 'type -> "email", 'id -> "uploader_email", 'required -> true)
+                        </div>
+                    </div>
+
                 </div>
-            </div>
 
-            <!-- Telefon -->
-            <div class="form-group row">
-                <label for="uploader_phone" class="col-sm-1 form-control-label">Telefon</label>
-                <div class="col-sm-11">
-                    @helper.inputText(annonsForm("uploader_phone"), '_label -> null, 'type -> "tel", 'id -> "uploader_phone")
+                    <!-- END OF DINA KONTAKTUPPGIFTER -->
+
+                    <!-- PASSWORD PANEL -->
+
+                <div id="password_panel">
+                    <legend><i class="fa fa-key"></i> Lösenord</legend>
+                    Tillåter dig att ta bort annonsen vid ett senare tillfälle.
+                    <!-- Password -->
+                    <div class="form-group row">
+                        <label for="uploader_password" class="col-sm-1 form-control-label">Lösenord</label>
+                        <div class="col-sm-11">
+                        @helper.inputText(annonsForm("uploader_password"), '_label -> null, 'type -> "password", 'id -> "uploader_password", 'required -> true)
+                        </div>
+                    </div>
+
                 </div>
+
+                    <!-- END OF PASSWORD PANEL -->
+                    <!-- HIDDEN -->
+                @helper.inputText(annonsForm("coordslat"), 'id -> "coordslat", '_label -> null, 'hidden -> "true", '_showConstraints -> false)
+                @helper.inputText(annonsForm("coordslng"), 'id -> "coordslng", '_label -> null, 'hidden -> "true", '_showConstraints -> false)
+                @helper.inputText(annonsForm("img"), 'id -> "img_path", '_label -> null, 'hidden -> "true", '_showConstraints -> false)
+
+                    <!-- Submit button -->
+                <button type="submit" class="btn btn-primary">Skapa annons</button>
             </div>
+        }
 
-            <!-- E-post -->
-            <div class="form-group row">
-                <label for="uploader_email" class="col-sm-1 form-control-label">E-post</label>
-                <div class="col-sm-11">
-                    @helper.inputText(annonsForm("uploader_email"), '_label -> null, 'type -> "email", 'id -> "uploader_email")
-                </div>
-            </div>
 
-        </div>
-
-        <!-- END OF DINA KONTAKTUPPGIFTER -->
-
-        <!-- PASSWORD PANEL -->
-
-        <div id="password_panel">
-            <legend>Lösenord</legend>
-            Tillåter dig att ta bort annonsen vid ett senare tillfälle.
-            <!-- Password -->
-            <div class="form-group row">
-                <label for="uploader_password" class="col-sm-1 form-control-label">Lösenord</label>
-                <div class="col-sm-11">
-                    @helper.inputText(annonsForm("uploader_password"), '_label -> null, 'type -> "password", 'id -> "uploader_password")
-                </div>
-            </div>
-
-        </div>
-
-        <!-- END OF PASSWORD PANEL -->
-        <!-- HIDDEN -->
-        @helper.inputText(annonsForm("coordslat"), 'id -> "coordslat", '_label -> null, 'hidden -> "true", '_showConstraints -> false)
-        @helper.inputText(annonsForm("coordslng"), 'id -> "coordslng", '_label -> null, 'hidden -> "true", '_showConstraints -> false)
-
-        <!-- Submit button -->
-        <input type="submit">
     }
-    </div>
-
-    @*
-    @helper.form(action = routes.HomeController.upload, 'enctype -> "multipart/form-data") {
-
-    <input type="file" name="picture">
-
-    <p>
-    <input type="submit">
-    </p>
-
-    }
-    *@
-}

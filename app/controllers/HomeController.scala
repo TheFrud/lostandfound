@@ -2,7 +2,7 @@ package controllers
 
 import javax.inject._
 import dao.{MyHash, AnnonsDAO}
-import models.{RemoveAnnonsForm, AnnonsForm, Annons}
+import models.{RemoveAnnonsForm, Annons}
 import play.api._
 import play.api.data.Form
 import play.api.data.Forms._
@@ -40,7 +40,7 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
       "hittelon" -> optional(number),
       "coordslat" -> optional(bigDecimal),
       "coordslng" -> optional(bigDecimal),
-      "img" -> ignored(Option.empty[java.io.File]),
+      "img" -> text,
       "date" -> sqlDate,
       "category" -> text,
       "county" -> text,
@@ -48,13 +48,18 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
       "uploader_phone" -> text,
       "uploader_email" -> text,
       "uploader_password" -> text
-    ) (AnnonsForm.apply)(AnnonsForm.unapply) verifying("Failed form constraints!", fields => fields match {
-      case annons => validate(annons.id, annons.typ, annons.rubrik, annons.text, annons.hittelon,
-        annons.coordslat, annons.coordslng, annons.date, annons.category, annons.county,
-        annons.uploader_name, annons.uploader_phone, annons.uploader_email, annons.uploader_password).isDefined
-    })
+    ) (Annons.apply)(Annons.unapply)
   )
 
+
+  /*
+  verifying("Failed form constraints!", fields => fields match {
+    case annons => validate(annons.id, annons.typ, annons.rubrik, annons.text, annons.hittelon,
+      annons.coordslat, annons.coordslng, annons.date, annons.category, annons.county,
+      annons.uploader_name, annons.uploader_phone, annons.uploader_email, annons.uploader_password).isDefined
+  })
+  */
+  /*
   def validate(id: Option[Long], typ: String, rubrik: String, text: String, hittelon: Option[Int],
                coordslat: Option[BigDecimal], coordslng: Option[BigDecimal], sqlDate: java.sql.Date, category: String, county: String,
                uploader_name: String, uploader_phone: String, uploader_email: String, uploader_password: String) = {
@@ -69,6 +74,8 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
         None
     }
   }
+  */
+
   // End of Form stuff
 
   // JSON Stuff
@@ -165,50 +172,48 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
     //  futurePersons.map {persons => Ok(Json.obj("users" -> persons))}
   }
 
-  def postAnnons = Action(parse.multipartFormData) { implicit request =>
-    request.body.file("img").map { picture =>
-      // retrieve the image and put it where you want...
-      val randomGenerator = new Random()
-      val cleanedFileName = picture.filename.replaceAll("[^a-zA-Z0-9.-]", "_")
-      val filename = randomGenerator.nextLong() + "_" + cleanedFileName
-      val imagepath = "public/images/annons_imgs/" + filename
-      val imageFile = new java.io.File(imagepath)
-      picture.ref.moveTo(imageFile)
 
-      annonsForm.bindFromRequest.fold(
-        formWithErrors => {
-          // binding failure, you retrieve the form containing errors:
-          println("Gick skit med formuläret")
-          BadRequest(views.html.lagg_till_annons(formWithErrors))
-        },
-        annons => {
-          // Encrypt password
-          val encrypted_password = MyHash.createPassword(annons.uploader_password)
+  def postAnnons = Action { implicit request =>
 
-          // Combine the file and form data...
-          val withPicture = Annons(annons.id, annons.typ, annons.rubrik, annons.text, annons.hittelon,
-            annons.coordslat, annons.coordslng, if(picture.filename.equals(""))annonsDao.defaultImgPath else filename, annons.date, annons.category, annons.county,
+    annonsForm.bindFromRequest.fold(
+      formWithErrors => {
+        // binding failure, you retrieve the form containing errors:
+        println("Annons could not be saved...")
+        BadRequest(views.html.lagg_till_annons(formWithErrors))
+      },
+      annons => {
+        // Encrypt password
+        val encrypted_password = MyHash.createPassword(annons.uploader_password)
+
+        // Combine the file and form data...
+        val annonsToSave = Annons(annons.id, annons.typ, annons.rubrik, annons.text, annons.hittelon,
+          annons.coordslat, annons.coordslng, annons.img, annons.date, annons.category, annons.county,
           annons.uploader_name, annons.uploader_phone, annons.uploader_email, encrypted_password)
 
-          annonsDao.create(withPicture)
-          println("Gick bra med formuläret")
-          Redirect(routes.HomeController.index()) flashing ("message" -> "Annons skapad!")
-        }
-      )
-    }.getOrElse(BadRequest("Missing Picture"))
+        // Saving annons to database
+        annonsDao.create(annonsToSave)
+
+        println("Annons saved...")
+        Redirect(routes.HomeController.index()) flashing ("message" -> "Annons skapad!")
+      }
+    )
   }
 
-  def upload = Action(parse.multipartFormData) { request =>
-    request.body.file("picture").map { picture =>
-      import java.io.File
-      val filename = picture.filename
-      val contentType = picture.contentType
-      picture.ref.moveTo(new File(s"tmp/picture/$filename"))
-      Ok("File uploaded")
-    }.getOrElse {
-      Redirect(routes.HomeController.index).flashing(
-        "error" -> "Missing file")
-    }
+  def upload = Action(parse.multipartFormData) {implicit request =>
+    println(request.body)
+    request.body.file("img").map {
+      picture => {
+        val randomGenerator = new Random()
+        val cleanedFileName = picture.filename.replaceAll("[^a-zA-Z0-9.-]", "_")
+        val filename = randomGenerator.nextLong() + "_" + cleanedFileName
+        val imagepath = "public/images/annons_imgs/" + filename
+        val imageFile = new java.io.File(imagepath)
+        picture.ref.moveTo(imageFile)
+        Ok(filename)
+      }
+    }.getOrElse(BadRequest("Missing picture!"))
+
+
   }
 
 }
