@@ -3,15 +3,15 @@ package controllers
 import javax.inject._
 import dao.{MyHash, AnnonsDAO}
 import models.{RemoveAnnonsForm, Annons}
-import play.api._
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.libs.json._
-import play.api.mvc._
 import play.api.Play.current
 import play.api.i18n.Messages.Implicits._
 import scala.concurrent.ExecutionContext.Implicits.global
 import java.util.Random
+import play.api.mvc._
+import play.api.routing._
 
 import scala.concurrent.Future
 
@@ -47,7 +47,8 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
       "uploader_name" -> text,
       "uploader_phone" -> text,
       "uploader_email" -> text,
-      "uploader_password" -> text
+      "uploader_password" -> text,
+      "posted" -> ignored(annonsDao.getCurrentDate)
     ) (Annons.apply)(Annons.unapply)
   )
 
@@ -95,7 +96,8 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
       "county" -> annons.county,
       "uploader_name" -> annons.uploader_name,
       "uploader_phone" -> annons.uploader_phone,
-      "uploader_email" -> annons.uploader_email
+      "uploader_email" -> annons.uploader_email,
+      "posted" -> annons.posted
     )
   }
 
@@ -112,10 +114,10 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
   def index = Action.async { implicit request =>
     // val annonser = List(Annons(0, "upphittat", "Såg", "Hej jag hittade en såg i mitt garage!", Some(25)), Annons(1, "upphittat", "Katt", "En katt sprang in i mitt hus.", None), Annons(2, "borttappat", "Sax", "Hejsan text.", None))
     val annonser = annonsDao.getAllNoPasswords
-    annonser.map(a => Ok(views.html.index(a)))
+    annonser.map { a =>  Ok(views.html.index(a))}
   }
 
-  def laggTillAnnons = Action {
+  def laggTillAnnons = Action { implicit request =>
     Ok(views.html.lagg_till_annons(annonsForm))
   }
 
@@ -159,19 +161,43 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
 
   }
 
-  def annonsPage(id: Long) = Action.async {
+  def annonsPage(id: Long) = Action.async { implicit request =>
     // Find annons by id
     val annonser = annonsDao.getAnnonsById(id)
     val annons = annonser.map(annonser => annonser.head)
     annons.map(a => Ok(views.html.annons(a, removeAnnonsForm)))
   }
 
-  def getAnnonser = Action.async {
+  def getAnnonser = Action.async { implicit request =>
     val annonser = annonsDao.getAllNoPasswords
     annonser.map {a => Ok(Json.obj("annonser" -> a))}
     //  futurePersons.map {persons => Ok(Json.obj("users" -> persons))}
   }
 
+  // JSON SAK
+  implicit val rds = (
+    (__ \ 'id).read[Long]
+    )
+
+  def getAnnons = Action.async(parse.json) { request =>
+    println(request.body)
+
+    request.body.validate[(Long)].map{
+      case id =>
+        val annonser = annonsDao.getAnnonsById(id)
+        val annons = annonser.map(annonser => annonser.head)
+        annons.map(a => Ok(Json.obj("annons" -> a)))
+    }.recoverTotal{
+      e => Future{ BadRequest("Detected error:"+ JsError.toFlatJson(e)) }
+    }
+
+    // Find annons by id
+    /*
+    val annonser = annonsDao.getAnnonsById(annonsId)
+    val annons = annonser.map(annonser => annonser.head)
+    annons.map(a => Ok(Json.obj("annons" -> a)))
+    */
+  }
 
   def postAnnons = Action { implicit request =>
 
@@ -192,7 +218,7 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
         // Combine the file and form data...
         val annonsToSave = Annons(annons.id, annons.typ, annons.rubrik, annons.text, annons.hittelon,
           annons.coordslat, annons.coordslng, image, annons.date, annons.category, annons.county,
-          annons.uploader_name, annons.uploader_phone, annons.uploader_email, encrypted_password)
+          annons.uploader_name, annons.uploader_phone, annons.uploader_email, encrypted_password, annons.posted)
 
         // Saving annons to database
         annonsDao.create(annonsToSave)
@@ -218,6 +244,16 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
     }.getOrElse(BadRequest("Missing picture!"))
 
 
+  }
+
+  def javascriptRoutes = Action { implicit request =>
+    Ok(
+      JavaScriptReverseRouter("jsRoutes")(
+        routes.javascript.HomeController.getAnnonser,
+        routes.javascript.HomeController.upload
+
+      )
+    ).as("text/javascript")
   }
 
 }

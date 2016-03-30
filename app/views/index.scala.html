@@ -1,16 +1,42 @@
 @(annonser: List[models.Annons])(implicit messages: Messages, flash: Flash)
 
 <script src="@routes.Assets.versioned("lib/jquery/jquery.min.js")" type="text/javascript"></script>
-<script src="@routes.Assets.versioned("javascripts/google_maps_global.js")" type="text/javascript" defer></script>
+<script src="@routes.Assets.versioned("javascripts/browserified/index.js")" type="text/javascript" defer></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyANnIreWdGEZQkZsvJiONegQXO-Dd49-14&callback=initMap"
 defer></script>
-<script src="@routes.Assets.versioned("javascripts/testdeferasync.js")" type="text/javascript" defer></script>
 <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/google_maps.css")">
+
 
 @main("Annonser") {
 
     <div id="index_views">
+        <div class="row" id="filter_panel">
+            <div class="col-xs-3">
+                <div class="input-group">
 
+                    Filter:
+
+                </div>
+            </div>
+            <div class="col-xs-3">
+                <div class="input-group">
+
+                    <span>Borttappat</span> &nbsp; <input type="checkbox" id="borttappat_checkbox">
+
+                </div>
+            </div>
+            <div class="col-xs-3">
+                <div class="input-group">
+
+                    <span>Upphittat</span> &nbsp; <input type="checkbox" id="upphittat_checkbox">
+
+
+                </div>
+            </div>
+            <div class="col-xs-3">Antal...</div>
+
+
+        </div>
         <div class="row" id="mapView">
             <div class="col-xs-1">
             </div>
@@ -36,12 +62,7 @@ defer></script>
                     </div>
                 }
 
-                Borttappat
-                <input type="checkbox" id="borttappat_checkbox">
-                Upphittat
-                <input type="checkbox" id="upphittat_checkbox">
-
-                @for(a <- annonser) {
+                @for(a <- annonser.sortWith((a: Annons, b: Annons) => a.posted.compareTo(b.posted) > 0)) {
                     @annons_listed(a)
                 }
             </div>

@@ -3,18 +3,22 @@
 <div class="annons_listed @annons.typ">
     <div class="media">
         <div class="media-left">
-            <a href="#">
-                <img class="media-object" src="@routes.Assets.versioned("images/annons_imgs/"+annons.img)" alt="..." height="42" width="42">
+            <a href="@routes.HomeController.annonsPage(annons.id.get)">
+                <div class="imgLiquidFill imgLiquid" style="width:100px; height:100px;">
+                    <img class="media-object img-rounded" src="@routes.Assets.versioned("images/annons_imgs/"+annons.img)" alt="@annons.typ.capitalize: @annons.rubrik">
+                </div>
             </a>
         </div>
         <div class="media-body">
             <h4 class="media-heading"><a href="@routes.HomeController.annonsPage(annons.id.get)">@annons.rubrik</a></h4>
+
             @if(annons.typ.equals("upphittat")){
                 <span class="label label-success">Upphittat</span>
             }
             @if(annons.typ.equals("borttappat")){
                 <span class="label label-primary">Borttappat</span>
             }
+            <em>@annons.date</em>
             <br>
             @annons.text
         </div>

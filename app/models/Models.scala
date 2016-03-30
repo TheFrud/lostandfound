@@ -19,7 +19,8 @@ case class Annons(
                    uploader_name: String,
                    uploader_phone: String,
                    uploader_email: String,
-                   uploader_password: String
+                   uploader_password: String,
+                   posted: java.sql.Date
                  )
 
 

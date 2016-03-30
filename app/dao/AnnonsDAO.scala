@@ -42,17 +42,20 @@ class AnnonsDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
     def uploader_phone = column[String] ("ANNONS_UPLOADER_PHONE")
     def uploader_email = column[String] ("ANNONS_UPLOADER_EMAIL")
     def uploader_password = column[String] ("ANNONS_UPLOADER_PASSWORD")
+    def posted = column[java.sql.Date] ("ANNONS_POSTED")
 
     // def * = (id.?, name, age)
-    def * = (id.?, typ, rubrik, text, hittelon, coordsLat, coordsLng, img, date, category, county, uploader_name, uploader_phone, uploader_email, uploader_password) <> (Annons.tupled, Annons.unapply)
+    def * = (id.?, typ, rubrik, text, hittelon, coordsLat, coordsLng, img, date, category, county, uploader_name, uploader_phone, uploader_email, uploader_password, posted) <> (Annons.tupled, Annons.unapply)
   }
 
   // Default image
   val defaultImg = "default.jpg"
 
-  // Default time
-  val currentDateGetter = new java.util.Date
-  val defaultDate = new java.sql.Date(currentDateGetter.getTime())
+  def getCurrentDate = {
+    val currentDateGetter = new java.util.Date
+    val currentDate = new java.sql.Date(currentDateGetter.getTime())
+    currentDate
+  }
 
   def setupdb = {
     try{
@@ -62,11 +65,11 @@ class AnnonsDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
         annonser.schema.create,
 
         annonser ++= Seq(
-          Annons(None, "upphittat", "Häst hittad!", "Hittade en häst på gården...", None, None, None, defaultImg, defaultDate, "Djur", "Gävleborgs län", "Fredrik Johansson", "0702915403", "thefrud@gmail.com", MyHash.createPassword("password1")),
-          Annons(None, "borttappat", "Katt bortsprungen", "Kära Elsa är bortsprungen. Hjälp mig hitta henne.", None, None, None, defaultImg, defaultDate, "Mobiltelefon", "Tuborgs län", "Fredrik Johansson", "0702915403", "thefrud@gmail.com", MyHash.createPassword("password2")),
-          Annons(None, "upphittat", "Väska", "En väska!", None, None, None, defaultImg, defaultDate, "Djur", "Gävleborgs län", "Fredrik Johansson", "0702915403", "thefrud@gmail.com", MyHash.createPassword("password3")),
-          Annons(None, "borttappat", "Ring", "Tappade bort en ring. :(", None, None, None, defaultImg, defaultDate, "Djur", "Kritvita län", "Fredrik Johansson", "0702915403", "thefrud@gmail.com", MyHash.createPassword("password4")),
-          Annons(None, "borttappat", "Kraftrör", "Kraftrör säger jag bara. Hjälp mig hitta det plx!", None, None, None, defaultImg, defaultDate, "Mobiltelefon", "Dagukar län", "Fredrik Johansson", "0702915403", "thefrud@gmail.com", MyHash.createPassword("password5"))
+          Annons(None, "upphittat", "Häst hittad!", "Hittade en häst på gården...", None, None, None, defaultImg, getCurrentDate, "Djur", "Gävleborgs län", "Fredrik Johansson", "0702915403", "thefrud@gmail.com", MyHash.createPassword("password1"), getCurrentDate),
+          Annons(None, "borttappat", "Katt bortsprungen", "Kära Elsa är bortsprungen. Hjälp mig hitta henne.", None, None, None, defaultImg, getCurrentDate, "Mobiltelefon", "Tuborgs län", "Fredrik Johansson", "0702915403", "thefrud@gmail.com", MyHash.createPassword("password2"), getCurrentDate),
+          Annons(None, "upphittat", "Väska", "En väska!", None, None, None, defaultImg, getCurrentDate, "Djur", "Gävleborgs län", "Fredrik Johansson", "0702915403", "thefrud@gmail.com", MyHash.createPassword("password3"), getCurrentDate),
+          Annons(None, "borttappat", "Ring", "Tappade bort en ring. :(", None, None, None, defaultImg, getCurrentDate, "Djur", "Kritvita län", "Fredrik Johansson", "0702915403", "thefrud@gmail.com", MyHash.createPassword("password4"), getCurrentDate),
+          Annons(None, "borttappat", "Kraftrör", "Kraftrör säger jag bara. Hjälp mig hitta det plx!", None, None, None, defaultImg, getCurrentDate, "Mobiltelefon", "Dagukar län", "Fredrik Johansson", "0702915403", "thefrud@gmail.com", MyHash.createPassword("password5"), getCurrentDate)
         )
 
       )
@@ -113,7 +116,7 @@ class AnnonsDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
       // Remove the password from the list items
       val listNoPasswords = list.map {list => list.map {item => Annons(item.id, item.typ, item.rubrik, item.text, item.hittelon,
         item.coordslat, item.coordslng, item.img, item.date, item.category, item.county,
-        item.uploader_name, item.uploader_phone, item.uploader_email, "") } }
+        item.uploader_name, item.uploader_phone, item.uploader_email, "", item.posted) } }
 
       // Return the list
       listNoPasswords

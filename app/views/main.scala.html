@@ -12,12 +12,29 @@
         @* Here's where we render the page title `String`. *@
         <title>@title</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+        <script type="text/javascript" src="@routes.HomeController.javascriptRoutes"></script>
+
         <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon/lostandfound-favicon.png")">
         <script src="@routes.Assets.versioned("lib/jquery/jquery.min.js")" type="text/javascript"></script>
-        <script src="@routes.Assets.versioned("javascripts/hello.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.versioned("lib/tether/dist/js/tether.min.js")" type="text/javascript"></script>
+        <link rel="stylesheet" href="@routes.Assets.versioned("lib/tether/dist/css/tether.min.css")">
         <link rel="stylesheet" href="@routes.Assets.versioned("lib/bootstrap/css/bootstrap.min.css")">
+        <script src="@routes.Assets.versioned("lib/bootstrap/js/bootstrap.min.js")" type="text/javascript"></script>
         <link rel="stylesheet" href="@routes.Assets.versioned("lib/font-awesome/css/font-awesome.min.css")">
+        <script src="@routes.Assets.versioned("lib/imgLiquid/js/imgLiquid-min.js")" type="text/javascript"></script>
+
+        <!-- This script makes it so that Jquery Mobile doesn't affect the UI -->
+        <script type="text/javascript">$(document).bind("mobileinit", function(){$.extend(  $.mobile , {autoInitializePage: false})});</script>
+
+        <!-- Jquery Mobile -->
+        <script src="@routes.Assets.versioned("lib/jquery-mobile/jquery.mobile.min.js")" type="text/javascript"></script>
+
+        @*
+        <link rel="stylesheet" href="@routes.Assets.versioned("lib/jquery-mobile/jquery.mobile.min.css")">
+        *@
 
     </head>
     <body>

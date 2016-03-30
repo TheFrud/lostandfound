@@ -7,9 +7,9 @@
 <script src="@routes.Assets.versioned("javascripts/google_maps_create.js")" type="text/javascript" defer></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyANnIreWdGEZQkZsvJiONegQXO-Dd49-14&callback=initMap"
 defer></script>
-<script src="@routes.Assets.versioned("javascripts/testdeferasync.js")" type="text/javascript" defer></script>
-<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/google_maps_lagg_till_annons.css")">
 
+<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/google_maps_lagg_till_annons.css")">
+<script src="@routes.Assets.versioned("javascripts/browserified/lagg_till_annons.js")" type="text/javascript" defer></script>
 
 
     @main("Skapa annons") {
@@ -29,13 +29,15 @@ defer></script>
                         <label for="file" class="col-sm-1 form-control-label">Bild</label>
                         <div class="col-sm-11">
                             <label class="file">
-                                <input type="file" name="img" id="file">
+                                <input type="file" name="img_input" id="file">
                                 <span class="file-custom"></span>
                             </label>
                         </div>
                     </div>
 
-                    <div id="uploaded_image"></div>
+
+                    <div id="uploaded_image" class="imgLiquidFill imgLiquid" style="display:none; width:100px; height:100px;"></div>
+
 
                     <progress id="progress_bar" style="display: none"></progress>
 
@@ -74,7 +76,7 @@ defer></script>
                     <div class="form-group row">
                         <label for="rubrik" class="col-sm-1 form-control-label">Rubrik</label>
                         <div class="col-sm-11">
-                        @helper.inputText(annonsForm("rubrik"), 'id -> "rubrik", '_label -> null, 'required -> true, 'maxlength -> 40, 'size -> 25)
+                        @helper.inputText(annonsForm("rubrik"), 'id -> "rubrik", '_label -> null, 'required -> true, 'maxlength -> 40)
                         </div>
                     </div>
 
@@ -82,7 +84,7 @@ defer></script>
                     <div class="form-group row">
                         <label for="text" class="col-sm-1 form-control-label">Beskrivning</label>
                         <div class="col-sm-11">
-                        @helper.textarea(annonsForm("text"), '_label -> null, 'id -> "text", 'rows -> 4, 'cols -> 35)
+                        @helper.textarea(annonsForm("text"), '_label -> null, 'id -> "text", 'rows -> 4)
                         </div>
                     </div>
 
@@ -140,7 +142,8 @@ defer></script>
 
 
                         <!-- Karta -->
-                    <label>Var <span id="fillThis">...</span> objektet?</label>
+                    <label>Var <span id="fillThis">...</span> objektet? (göra det tydligt här att personen ska markera på kartan)</label>
+                    <label>Var <span id="fillThis">...</span> objektet? (göra det tydligt här att personen ska markera på kartan)</label>
                     <div class="row">
                         <div class="col-sm-4">
                             <div id="map"></div>

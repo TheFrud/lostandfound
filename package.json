@@ -1,0 +1,19 @@
+{
+  "name": "lostandfound",
+  "version": "1.0.0",
+  "description": "play app",
+  "main": "index.js",
+  "dependencies": {
+    "browserify": "*",
+    "imagemin": "^3.1.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Fredrik Johansson",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp-browser": "*",
+    "gulp-livereload": "^3.8.1"
+  }
+}
