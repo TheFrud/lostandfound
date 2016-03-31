@@ -1,6 +1,11 @@
 package controllers
 
+import java.io.{File, FileInputStream}
+import javax.imageio.ImageIO
 import javax.inject._
+import com.sksamuel.scrimage.ScaleMethod.FastScale
+import com.sksamuel.scrimage._
+import com.sksamuel.scrimage.nio.JpegWriter
 import dao.{MyHash, AnnonsDAO}
 import models.{RemoveAnnonsForm, Annons}
 import play.api.data.Form
@@ -236,9 +241,22 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
         val randomGenerator = new Random()
         val cleanedFileName = picture.filename.replaceAll("[^a-zA-Z0-9.-]", "_")
         val filename = randomGenerator.nextLong() + "_" + cleanedFileName
-        val imagepath = "public/images/annons_imgs/" + filename
+        val imagefolder = "public/images/annons_imgs/"
+        val imagepath = imagefolder + filename
         val imageFile = new java.io.File(imagepath)
         picture.ref.moveTo(imageFile)
+
+
+
+        // Fetch overlay img
+        val bufferedImage = ImageIO.read(new File(imagefolder + "image_overlay.png"))
+        val scrimage = com.sksamuel.scrimage.Image.awtToScrimage(bufferedImage)
+
+        implicit val writer = JpegWriter().withCompression(50)
+        val in = new FileInputStream(imageFile) // input stream
+        val out = Image.fromStream(in).fit(300, 300).overlay(scrimage).output(new File(imagepath)) // output stream
+        // val out = Image.fromStream(in).scaleTo(300, 200, FastScale).output(new File(imagepath)) // output stream
+
         Ok(filename)
       }
     }.getOrElse(BadRequest("Missing picture!"))
