@@ -19,8 +19,8 @@ typSelector.change(function() {
 var setFormType = function () {
 
 	// Messages
-	const borttappatMsg = "tappade du bort";
-	const upphittatMsg = "hittade du";
+	const borttappatMsg = "tappade bort";
+	const upphittatMsg = "hittade";
 
     // Get selected value from select input 
 	var selectValue = $( "#typ option:selected" ).text();

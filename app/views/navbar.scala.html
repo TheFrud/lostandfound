@@ -8,9 +8,12 @@ Determine button colors.
 
 <nav id="nav_bar" class="navbar navbar-fixed-top">
 
-        <button type="button" class="btn btn-secondary" id="annonser_button" onclick="location.href='@routes.HomeController.index()';">Annonser</button>
+        <button type="button" class="btn btn-secondary" id="annonser_button" onclick="location.href='@routes.HomeController.index()';">
+                <i class="fa fa-list"></i>
+                 Annonser</button>
 
-        <button type="button" class="btn btn-secondary" id="skapa_annons_button" onclick="location.href='@routes.HomeController.laggTillAnnons()';">Skapa annons</button>
+        <button type="button" class="btn btn-secondary" id="skapa_annons_button" onclick="location.href='@routes.HomeController.laggTillAnnons()';">
+                <i class="fa fa-plus"></i> Lägg in</button>
 
 
 </nav>

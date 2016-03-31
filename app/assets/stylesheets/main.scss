@@ -1,7 +1,22 @@
+/*@include media-breakpoint-down(xs)*/
+/* @import "lib/compass-mixins/lib/compass"; */
+@import "lib/bootstrap/scss/bootstrap";
+
+
 body {
 	overflow-y:scroll;
 	background-color: lightblue;
+    
+    padding-top: 70;
+
 }
+
+@media (max-width: 320px) {
+    body {
+        padding-top: 95
+    }
+}
+
 
 /* FORM FIELDS */
 input:required {

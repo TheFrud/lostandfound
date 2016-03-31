@@ -21,20 +21,7 @@ defer></script>
 
                 <div id="object_panel">
 
-                    <legend><i class="fa fa-sticky-note"></i> Annons</legend>
-                    xzasdsadsadsadasdas...
-
-                    <!-- Ladda upp bild -->
-                    <div class="form-group row">
-                        <label for="file" class="col-sm-1 form-control-label">Bild</label>
-                        <div class="col-sm-11">
-                            <label class="file">
-                                <input type="file" name="img_input" id="file">
-                                <span class="file-custom"></span>
-                            </label>
-                        </div>
-                    </div>
-
+                    <legend><i class="fa fa-sticky-note"></i> Generellt</legend>
 
                     <div id="uploaded_image" class="imgLiquidFill imgLiquid" style="display:none; width:100px; height:100px;"></div>
 
@@ -54,9 +41,10 @@ defer></script>
                     </div>
 
                     <!-- Typ -->
-                    <div class="form-group row">
-                        <label for="typ" class="col-sm-1 form-control-label">Typ</label>
-                        <div class="col-sm-11">
+
+                    <fieldset class="form-group">
+                        <label for="typ">Typ</label>
+                        <small class="text-muted"></small>
                         @helper.select(
                             field = annonsForm("typ"),
                             options = Seq(
@@ -69,81 +57,114 @@ defer></script>
                             'id -> "typ",
                             'autofocus -> true
                         )
-                        </div>
-                    </div>
+                    </fieldset>
 
                         <!-- Rubrik -->
-                    <div class="form-group row">
-                        <label for="rubrik" class="col-sm-1 form-control-label">Rubrik</label>
-                        <div class="col-sm-11">
-                        @helper.inputText(annonsForm("rubrik"), 'id -> "rubrik", '_label -> null, 'required -> true, 'maxlength -> 40)
-                        </div>
-                    </div>
+                    <fieldset class="form-group">
+                        <label for="rubrik">Rubrik</label>
+                        <small class="text-muted"></small>
+                        @helper.inputText(annonsForm("rubrik"), 'id -> "rubrik", 'class -> "form-control", '_label -> null, 'required -> true, 'maxlength -> 40)
+                    </fieldset>
 
                         <!-- Beskrivning-->
-                    <div class="form-group row">
-                        <label for="text" class="col-sm-1 form-control-label">Beskrivning</label>
-                        <div class="col-sm-11">
+                    <fieldset class="form-group">
+                        <label for="text">Beskrivning</label>
                         @helper.textarea(annonsForm("text"), '_label -> null, 'id -> "text", 'rows -> 4)
-                        </div>
-                    </div>
+                        <small class="text-muted"></small>
+                    </fieldset>
 
-                        <!-- Datum -->
-                    <div class="form-group row">
-                        <label for="datum" class="col-sm-1 form-control-label">Datum</label>
-                        <div class="col-sm-11">
+                    <!-- Datum -->
+                    <fieldset class="form-group">
+                        <label for="datum">Datum</label>
+                        <br>
+                        <small class="text-muted">När försvann objektet?</small>
                         @helper.inputDate(annonsForm("date"), '_label -> null, 'id -> "datum", '_showConstraints -> false)
-                        </div>
-                    </div>
+
+                    </fieldset>
+
+                        <!-- Hittelön -->
+                    <fieldset class="form-group" id="hittelon_div">
+                        <label for="hittelon">Hittelön</label>
+                        <br>
+                        <small class="text-muted">Valfritt.</small>
+                        @helper.inputText(annonsForm("hittelon"), '_label -> null, 'placeholder -> "Valfritt", 'type -> "number", '_showConstraints -> false, 'id -> "hittelon")
+                    </fieldset>
 
                         <!-- Kategori -->
-                    <div class="form-group row">
-                        <label for="category" class="col-sm-1 form-control-label">Kategori</label>
-                        <div class="col-sm-11">
+                    <fieldset class="form-group">
+                        <label for="category">Kategori</label>
                         @helper.select(
                             field = annonsForm("category"),
                             options = Seq(
+                                "Annat" -> "Annat",
                                 "Djur" -> "Djur",
-                                "Mobiltelefon" -> "Mobiltelefon"
+                                "Kläder" -> "Kläder",
+                                "Klocka" -> "Klocka",
+                                "Väska" -> "Väska",
+                                "Glasögon" -> "Glasögon",
+                                "Nycklar" -> "Nycklar",
+                                "ID/Kort" -> "ID/Kort",
+                                "Mobiltelefon" -> "Mobiltelefon",
+                                "Dator" -> "Dator",
+                                "Fordon" -> "Fordon"
                             ),
                             'default -> "Välj kategori",
                             '_label -> null,
                             'class -> "form-control",
                             'id -> "category"
                         )
-                        </div>
-                    </div>
+                    </fieldset>
 
-                        <!-- Län -->
-                    <div class="form-group row">
-                        <label for="county" class="col-sm-1 form-control-label">Län</label>
-                        <div class="col-sm-11">
+                    <fieldset class="form-group">
+                        <label for="county">Län</label>
                         @helper.select(
                             field = annonsForm("county"),
                             options = Seq(
+                                "Blekinge län" -> "Blekinge län",
+                                "Dalarnas län" -> "Dalarnas län",
+                                "Gotlands län" -> "Gotlands län",
                                 "Gävleborgs län" -> "Gävleborgs län",
-                                "Stefansbergs län" -> "Stefansbergs län"
+                                "Hallands län" -> "Hallands län",
+                                "Jämtlands län" -> "Jämtlands län",
+                                "Jönköpings län" -> "Jönköpings län",
+                                "Kalmar län" -> "Kalmar län",
+                                "Kronobergs län" -> "Kronobergs län",
+                                "Norrbottens län" -> "Norrbottens län",
+                                "Skåne län" -> "Skåne län",
+                                "Stockholms län" -> "Stockholms län",
+                                "Södermanlands län" -> "Södermanlands län",
+                                "Uppsala län" -> "Uppsala län",
+                                "Värmlands län" -> "Värmlands län",
+                                "Västerbottens län" -> "Västerbottens län",
+                                "Västernorrlands län" -> "Västernorrlands län",
+                                "Västmanlands län" -> "Västmanlands län",
+                                "Västra Götalands län" -> "Västra Götalands län",
+                                "Örebro län" -> "Örebro län",
+                                "Östergötlands län" -> "Östergötlands län"
                             ),
                             'default -> "Välj län",
                             '_label -> null,
                             'class -> "form-control",
                             'id -> "county"
                         )
-                        </div>
-                    </div>
+                    </fieldset>
 
-                        <!-- Hittelön -->
-                    <div class="form-group row" id="hittelon_div">
-                        <label for="hittelon" class="col-sm-1 form-control-label">Hittelön</label>
-                        <div class="col-sm-11">
-                        @helper.inputText(annonsForm("hittelon"), '_label -> null, 'placeholder -> "Valfritt...", 'type -> "number", '_showConstraints -> false, 'id -> "hittelon")
-                        </div>
-                    </div>
+                        <!-- Ladda upp bild -->
+                    <legend><i class="fa fa-picture-o"></i> Bild</legend>
+                    <fieldset class="form-group">
+                        <!-- <label for="file">Ladda upp bild</label>
+                        <br>-->
+                        <small class="text-muted">Det är starkt rekommenderat att du laddar upp en bild.</small>
+                        <br>
+                        <input type="file" class="form-control-file" name="img_input" id="file">
 
+                    </fieldset>
 
+                    <legend><i class="fa fa-map-marker"></i> Var?</legend>
                         <!-- Karta -->
-                    <label>Var <span id="fillThis">...</span> objektet? (göra det tydligt här att personen ska markera på kartan)</label>
-                    <label>Var <span id="fillThis">...</span> objektet? (göra det tydligt här att personen ska markera på kartan)</label>
+                    <label><strong>Drag markören</strong> dit du <span id="fillThis">...</span> objektet.</label>
+                    <br>
+                    <small class="text-muted">Behöver självklart inte vara exakt.</small>
                     <div class="row">
                         <div class="col-sm-4">
                             <div id="map"></div>
@@ -159,7 +180,7 @@ defer></script>
 
                 <div id="uploader_info_panel">
                     <legend><i class="fa fa-user"></i> Dina kontaktuppgifter</legend>
-                    dsadasdsdadasdasdsa...
+                    Fyll i dessa uppgifter noggrant.
                     <!-- Namn -->
                     <div class="form-group row">
                         <label for="uploader_name" class="col-sm-1 form-control-label">Namn</label>
@@ -197,7 +218,7 @@ defer></script>
                     <div class="form-group row">
                         <label for="uploader_password" class="col-sm-1 form-control-label">Lösenord</label>
                         <div class="col-sm-11">
-                        @helper.inputText(annonsForm("uploader_password"), '_label -> null, 'type -> "password", 'id -> "uploader_password", 'required -> true)
+                        @helper.inputText(annonsForm("uploader_password"), '_label -> null, 'type -> "password", 'id -> "uploader_password", 'required -> true, 'minlength -> "4")
                         </div>
                     </div>
 
