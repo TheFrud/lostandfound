@@ -1,85 +1,93 @@
 /*jshint esnext: true */
 
-        // If geolocation isn't supported we will use these standard coords.
-        const sthlmlat = 59.328519;
-        const sthlmlng = 18.067878;
+// If geolocation isn't supported we will use these standard coords.
+const sthlmlat = 59.328519;
+const sthlmlng = 18.067878;
 
-        var myLatlng;
-        var map;
-        var marker;
-        var defaultLat = sthlmlat;
-        var defaultLng = sthlmlng;
+var myLatlng;
+var map;
+var marker;
+var defaultLat = sthlmlat;
+var defaultLng = sthlmlng;
 
-        function initMap() {
+const getMarker = function() {
+    return marker;
+};
 
-            // Get user location
-            // THEN
-            // Execute the callback I pass to the function (setLocation)
-            // The callback will execute the rest of the initialization.
-            setLocation(function(){
-                console.log("initMap()");
+const initMap = function(callback) {
 
-                myLatlng = new google.maps.LatLng(defaultLat, defaultLng);
+    // Get user location
+    // THEN
+    // Execute the callback I pass to the function (setLocation)
+    // The callback will execute the rest of the initialization.
+    setLocation(function(){
+        console.log("initMap()");
 
-                var mapOptions = {
-                    zoom: 8,
-                    center: myLatlng
-                };
+        myLatlng = new google.maps.LatLng(defaultLat, defaultLng);
 
-                map = new google.maps.Map(document.getElementById('map'), mapOptions);
-
-                // Place a draggable marker on the map
-                marker = new google.maps.Marker({
-                    position: myLatlng,
-                    map: map,
-                    draggable:true,
-                    title:"Drag me!"
-                });
-
-                marker.set("id", "myMarker");
-
-                whenLoaded();
-            });
-
-
-        }
-        // $("#myMarker").move(function(){console.log("dasdsad")})
-        var whenLoaded = function(){
-            $("#coordslat").val(marker.position.lat);
-            $("#coordslng").val(marker.position.lng);
-
-            marker.addListener("dragend", function(){
-                console.log("Drag end");
-                $("#coordslat").val(marker.position.lat);
-                $("#coordslng").val(marker.position.lng);
-            });
-
+        var mapOptions = {
+            zoom: 8,
+            center: myLatlng
         };
 
-        function setLocation(callback) {
+        map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
-            getLocation();
+        // Place a draggable marker on the map
+        marker = new google.maps.Marker({
+            position: myLatlng,
+            map: map,
+            draggable:true,
+            title:"Drag me!"
+        });
 
-            // Get user location
-            function getLocation() {
-                if (navigator.geolocation) {
-                    console.log("Got geolocation!");
-                    navigator.geolocation.getCurrentPosition(showPosition);
-                } else {
-                    // If geolocation isn't supported we will use these standard coords.
-                    console.log("No geolocation!");
-                    console.log("Using default coords...");
-                    callback();
-                }
-            }
-            function showPosition(position) {
-                console.log("Setting coords to user position...");
-                defaultLat = position.coords.latitude;
-                defaultLng = position.coords.longitude; 
-                callback();
-            }
+        marker.set("id", "myMarker");
+
+        callback();
+
+        whenLoaded();
+    });
 
 
+};
+
+// $("#myMarker").move(function(){console.log("dasdsad")})
+var whenLoaded = function(){
+    $("#coordslat").val(marker.position.lat);
+    $("#coordslng").val(marker.position.lng);
+
+    marker.addListener("dragend", function(){
+        console.log("Drag end");
+        $("#coordslat").val(marker.position.lat);
+        $("#coordslng").val(marker.position.lng);
+    });
+
+};
+
+function setLocation(callback) {
+
+    getLocation();
+
+    // Get user location
+    function getLocation() {
+        if (navigator.geolocation) {
+            console.log("Got geolocation!");
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            // If geolocation isn't supported we will use these standard coords.
+            console.log("No geolocation!");
+            console.log("Using default coords...");
+            callback();
         }
+    }
+    function showPosition(position) {
+        console.log("Setting coords to user position...");
+        defaultLat = position.coords.latitude;
+        defaultLng = position.coords.longitude; 
+        callback();
+    }
 
 
+}
+
+module.exports.initMap = initMap;
+module.exports.getMarker = getMarker;

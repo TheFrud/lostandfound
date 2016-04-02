@@ -11,37 +11,78 @@ Load the scripts if it does.
 <script src="@routes.Assets.versioned("javascripts/google_maps_read.js")" type="text/javascript" defer></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyANnIreWdGEZQkZsvJiONegQXO-Dd49-14&callback=initMap"
 defer></script>
-<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/google_maps.css")">
+<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/google_maps_annons.css")">
+    <script src="@routes.Assets.versioned("javascripts/browserified/annons.js")" type="text/javascript" defer></script>
 }
 
 @main("Annons") {
     <div id="annons_outside">
         <div id="annons">
-            <h1>@annons.rubrik</h1>
-
-            <div class="imgLiquidFill imgLiquid" style="width:300px; height:300px;">
-                <img class="media-object img-rounded" src="@routes.Assets.versioned("images/annons_imgs/"+annons.img)" alt="@annons.typ.capitalize: @annons.rubrik">
+            <div class="row">
+                <div class="col-sm-8">
+                    <div id="left">
+                        <h2>@*<i class="fa fa-sticky-note"></i>*@ @annons.rubrik</h2>
+                        <span class="label label-default">@annons.category</span>
+                        <br>
+                        <strong>@annons.county</strong>
+                        <br>
+                        @*Annons skapad: @annons.posted
+                        <br>*@
+                        @if(annons.typ.equals("borttappat")){
+                            <strong>Tappades bort:</strong>
+                        } else {
+                            <strong>Hittades:</strong>
+                        }
+                        @annons.date
+                        <br>
+                        <strong>Beskrivning:</strong>
+                        <p>@annons.text</p>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div id="image_panel" class="imgLiquidFill imgLiquid" style="width:225px; height:225px;">
+                        <img class="media-object img-rounded" src="@routes.Assets.versioned("images/annons_imgs/"+annons.img)" alt="@annons.typ.capitalize: @annons.rubrik">
+                    </div>
+                </div>
             </div>
-
-            <p>@annons.text</p>
-
+            <hr>
+            <legend><i class="fa fa-map-marker"></i> Var?</legend>
             @*
             Checks if the 'annons' got map coordinates.
             Create map div if it does.
             *@
             @if(annons.coordslat.nonEmpty){
                 <div class="row" id="mapView">
-                    <div class="col-xs-1">
-                    </div>
                     <div class="col-xs-10">
                         <div id="map" ></div>
+                    </div>
+                    <div class="col-xs-1">
+
                     </div>
                     <div class="col-xs-1">
                     </div>
                 </div>
             }
 
-            <br>
+            <hr>
+
+            <div id="kontaktuppgifter_panel">
+                <legend><i class="fa fa-user"></i> Kontaktuppgifter</legend>
+                @if(annons.typ.equals("borttappat")){
+                    Kontakta @annons.uploader_name om du har upplysningar!
+                } else {
+                    Kontakta @annons.uploader_name om detta är ditt objekt!
+                }
+
+                <br>
+                <strong>Telefon:</strong> @annons.uploader_phone
+                <br>
+                <strong>E-post:</strong> @annons.uploader_email
+            </div>
+
+
+
+
 
             <a data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                 <u>För dig som skapat annonsen</u>

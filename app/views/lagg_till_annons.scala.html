@@ -4,12 +4,12 @@
     Google Maps Stuff
     *@
 <script src="@routes.Assets.versioned("lib/jquery/jquery.min.js")" type="text/javascript"></script>
-<script src="@routes.Assets.versioned("javascripts/google_maps_create.js")" type="text/javascript" defer></script>
+<script src="@routes.Assets.versioned("javascripts/browserified/lagg_till_annons.js")" type="text/javascript" defer></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyANnIreWdGEZQkZsvJiONegQXO-Dd49-14&callback=initMap"
 defer></script>
 
 <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/google_maps_lagg_till_annons.css")">
-<script src="@routes.Assets.versioned("javascripts/browserified/lagg_till_annons.js")" type="text/javascript" defer></script>
+
 
 
     @main("Skapa annons") {
@@ -22,23 +22,6 @@ defer></script>
                 <div id="object_panel">
 
                     <legend><i class="fa fa-sticky-note"></i> Generellt</legend>
-
-                    <div id="uploaded_image" class="imgLiquidFill imgLiquid" style="display:none; width:100px; height:100px;"></div>
-
-
-                    <progress id="progress_bar" style="display: none"></progress>
-
-                    <div class="alert alert-danger" role="alert" id="img_upload_failure" style="display:none;">
-                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                        <span class="sr-only">Error:</span>
-                        DAERROR
-                    </div>
-
-                    <div class="alert alert-success" role="alert" id="img_upload_succeess" style="display:none;">
-                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                        <span class="sr-only">YAy!:</span>
-                        SUCCESSEN
-                    </div>
 
                     <!-- Typ -->
 
@@ -69,7 +52,7 @@ defer></script>
                         <!-- Beskrivning-->
                     <fieldset class="form-group">
                         <label for="text">Beskrivning</label>
-                        @helper.textarea(annonsForm("text"), '_label -> null, 'id -> "text", 'rows -> 4)
+                        @helper.textarea(annonsForm("text"), '_label -> null, 'id -> "text", 'maxlength -> 1500)
                         <small class="text-muted"></small>
                     </fieldset>
 
@@ -156,9 +139,29 @@ defer></script>
                         <br>-->
                         <small class="text-muted">Det är starkt rekommenderat att du laddar upp en bild.</small>
                         <br>
-                        <input type="file" class="form-control-file" name="img_input" id="file">
+                        <input type="file" class="form-control-file" name="img_input" id="file_selector">
 
                     </fieldset>
+
+                    <!-- Image progress bar -->
+                    <progress id="progress_bar" style="display: none"></progress>
+
+                    <!-- Image upload failure message -->
+                    <div class="alert alert-danger" role="alert" id="img_upload_failure" style="display:none;">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span class="sr-only">Error:</span>
+                        DAERROR
+                    </div>
+                        <!-- Image upload success message -->
+                    <div class="alert alert-success" role="alert" id="img_upload_succeess" style="display:none;">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span class="sr-only">YAy!:</span>
+                        SUCCESSEN
+                    </div>
+
+                    <!-- Shows the image here when it's uploaded -->
+                    <div id="uploaded_image" class="imgLiquidFill imgLiquid" style="display:none; width:100px; height:100px;"></div>
+
 
                     <legend><i class="fa fa-map-marker"></i> Var?</legend>
                         <!-- Karta -->
@@ -181,29 +184,27 @@ defer></script>
                 <div id="uploader_info_panel">
                     <legend><i class="fa fa-user"></i> Dina kontaktuppgifter</legend>
                     Fyll i dessa uppgifter noggrant.
+
                     <!-- Namn -->
-                    <div class="form-group row">
-                        <label for="uploader_name" class="col-sm-1 form-control-label">Namn</label>
-                        <div class="col-sm-11">
-                        @helper.inputText(annonsForm("uploader_name"), '_label -> null, 'id -> "uploader_name")
-                        </div>
-                    </div>
+                    <fieldset class="form-group">
+                        <label for="uploader_name">Namn</label>
+                        <small class="text-muted"></small>
+                        @helper.inputText(annonsForm("uploader_name"), '_label -> null, 'id -> "uploader_name", 'maxlength -> 80)
+                    </fieldset>
 
                         <!-- Telefon -->
-                    <div class="form-group row">
-                        <label for="uploader_phone" class="col-sm-1 form-control-label">Telefon</label>
-                        <div class="col-sm-11">
-                        @helper.inputText(annonsForm("uploader_phone"), '_label -> null, 'type -> "tel", 'id -> "uploader_phone")
-                        </div>
-                    </div>
+                    <fieldset class="form-group">
+                        <label for="uploader_phone">Telefon</label>
+                        <small class="text-muted"></small>
+                        @helper.inputText(annonsForm("uploader_phone"), '_label -> null, 'type -> "tel", 'id -> "uploader_phone" , 'maxlength -> 40)
+                    </fieldset>
 
                         <!-- E-post -->
-                    <div class="form-group row">
-                        <label for="uploader_email" class="col-sm-1 form-control-label">E-post</label>
-                        <div class="col-sm-11">
-                        @helper.inputText(annonsForm("uploader_email"), '_label -> null, 'type -> "email", 'id -> "uploader_email", 'required -> true)
-                        </div>
-                    </div>
+                    <fieldset class="form-group">
+                        <label for="uploader_email">E-post</label>
+                        <small class="text-muted"></small>
+                        @helper.inputText(annonsForm("uploader_email"), '_label -> null, 'type -> "email", 'id -> "uploader_email", 'required -> true , 'maxlength -> 100)
+                    </fieldset>
 
                 </div>
 
@@ -215,12 +216,12 @@ defer></script>
                     <legend><i class="fa fa-key"></i> Lösenord</legend>
                     Tillåter dig att ta bort annonsen vid ett senare tillfälle.
                     <!-- Password -->
-                    <div class="form-group row">
-                        <label for="uploader_password" class="col-sm-1 form-control-label">Lösenord</label>
-                        <div class="col-sm-11">
+
+                    <fieldset class="form-group">
+                        <label for="uploader_password">Lösenord</label>
+                        <small class="text-muted"></small>
                         @helper.inputText(annonsForm("uploader_password"), '_label -> null, 'type -> "password", 'id -> "uploader_password", 'required -> true, 'minlength -> "4")
-                        </div>
-                    </div>
+                    </fieldset>
 
                 </div>
 

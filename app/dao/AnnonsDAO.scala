@@ -49,7 +49,7 @@ class AnnonsDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
   }
 
   // Default image
-  val defaultImg = "default.jpg"
+  val defaultImg = "default.gif"
 
   def getCurrentDate = {
     val currentDateGetter = new java.util.Date

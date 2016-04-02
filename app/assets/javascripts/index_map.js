@@ -32,7 +32,6 @@ const getAnnonser = function() {
     console.log("getAnnonser()");
     const url = jsRoutes.controllers.HomeController.getAnnonser();
 
-
     const dataPromise = $.ajax(url);
 
     dataPromise.then(function(data){
@@ -77,7 +76,7 @@ const getAnnonser = function() {
                 "<img class='media-object' src='/assets/images/annons_imgs/"+item.img+"' alt='...'>" +
                  "</div>" +
                  "<br>" + item.text +
-                 "</div> dafsdsadasdasdasdasd";
+                 "</div>";
                  
 
                 var infowindow = new google.maps.InfoWindow({

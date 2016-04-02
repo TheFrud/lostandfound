@@ -1,19 +1,30 @@
 /*@include media-breakpoint-down(xs)*/
 /* @import "lib/compass-mixins/lib/compass"; */
-@import "lib/bootstrap/scss/bootstrap";
 
+$btn-primary-color:              #FFFFFF !default;
+$btn-primary-bg:                 #3296E1 !default;
+$btn-primary-border:             #3296E1 !default;
+
+$label-success-bg:              #00E64D !default;
+$label-danger-bg:               #FD7567 !default;
+
+@import "lib/bootstrap/scss/bootstrap";
 
 body {
 	overflow-y:scroll;
-	background-color: lightblue;
     
-    padding-top: 70;
+    /* Good for controlling so that the content under the navbar, doesnt get beneath it when the buttons is placed vertically. (wraps?) */
+    padding-top: 50;
+
+    /* So that long words doesn't go outside divs. */
+    /* https://developer.mozilla.org/en-US/docs/Web/CSS/word-wrap */
+    word-wrap: break-word;
 
 }
 
 @media (max-width: 320px) {
     body {
-        padding-top: 95
+        // padding-top: 95
     }
 }
 
@@ -32,6 +43,10 @@ input:invalid {
 /*
 Lägg till annons
 */
+
+textarea {
+    resize: both;
+}
 
 #uploader_info_panel {
     border-radius: 7px;
@@ -65,11 +80,63 @@ Lägg till annons
     /*margin: 20px;*/
 }
 
+/*
+Nav bar
+*/
 #nav_bar {
     border-radius: 0px;
     border: 1px;
     padding: 10px; 
-    background-color: white;
+    background-color: #ABCBE8;
+}
+
+/*
+LOGO
+*/
+
+#large_logo {
+    display:inline;
+}
+
+#small_logo {
+    display: none;
+}
+
+@media (max-width: 320px) {
+    #large_logo {
+        display: none;
+    }
+    #small_logo {
+        display: inline;
+        max-width: 45px;
+        max-height: 45px;
+    }
+}
+
+@media (min-width: 360px) {
+    #large_logo {
+        display: none;
+    }
+    #small_logo {
+        display: inline;
+        /* These values should be higher. Will fix
+        No difference from the smaller devices now.
+        */
+        max-width: 45px;
+        max-height: 45px;
+    }
+}
+
+@media (min-width: 414px) {
+    #large_logo {
+        display: inline;
+        max-width: 125px;
+        max-height: 125px;
+
+    }
+    #small_logo {
+        display: none;
+    }
 }
 
 /*
@@ -101,9 +168,16 @@ Annons listed
     border: 3px solid #F7F7F9;
     padding: 10px; 
     background-color: white;
+
     /*margin: 20px;*/
 }
 
+.annons_text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 240px;   
+}
 
 /*
 Annons
@@ -119,7 +193,6 @@ Annons
 
 
 #annons_outside {
-    border-radius: 7px;
     border: 1px solid #F7F7F9;
     padding: 10px; 
     background-color: #EDEFF0;

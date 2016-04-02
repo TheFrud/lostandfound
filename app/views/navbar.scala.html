@@ -7,19 +7,21 @@ Determine button colors.
 <div id="active_page" style="display: none;">@title</div>
 
 <nav id="nav_bar" class="navbar navbar-fixed-top">
+		<button type="button" class="btn btn-secondary" id="annonser_button" onclick="location.href='@routes.HomeController.index()';">
+				<i class="fa fa-list"></i>
+				Annonser</button>
 
-        <button type="button" class="btn btn-secondary" id="annonser_button" onclick="location.href='@routes.HomeController.index()';">
-                <i class="fa fa-list"></i>
-                 Annonser</button>
+		<button type="button" class="btn btn-secondary" id="skapa_annons_button" onclick="location.href='@routes.HomeController.laggTillAnnons()';">
+				<i class="fa fa-plus"></i> Lägg in</button>
 
-        <button type="button" class="btn btn-secondary" id="skapa_annons_button" onclick="location.href='@routes.HomeController.laggTillAnnons()';">
-                <i class="fa fa-plus"></i> Lägg in</button>
+        @* LOGO HERE*@
 
+        <span>
+                <img id="large_logo" src="@routes.Assets.versioned("images/logo/logo-try-nalgrej-(croppad).png")" alt="logo" style="width: auto; height: auto;">
+                <img id="small_logo" src="@routes.Assets.versioned("images/logo/logo-try-nalgrej-(endast-nal)-(croppad).png")" alt="logo" style="width: auto; height: auto;">
+        </span>
 
 </nav>
-@*Logo HERE*@
-@*
-<span>
-<img src="@routes.Assets.versioned("images/logo/lostandfound-small.jpg")" alt="logo">
-</span>
-*@
+
+
+

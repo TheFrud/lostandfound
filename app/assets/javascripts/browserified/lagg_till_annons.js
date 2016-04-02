@@ -2,9 +2,20 @@
 /*jshint esnext: true */
 
 const initializer = require("./init_page");
+const initializer_map = require("./google_maps_create");
 
 initializer.initPage();
 
+var marker;
+
+
+
+window.initMap = function() {
+	// Note the callback function
+	// This should be implemented better
+	initializer_map.initMap(setFormType);
+
+};
 
 // Html elements
 const typSelector = $("#typ");
@@ -18,6 +29,7 @@ typSelector.change(function() {
 
 // Changes the fillThis-value.
 var setFormType = function () {
+	marker = initializer_map.getMarker();
 
 	// Messages
 	const borttappatMsg = "tappade bort";
@@ -30,6 +42,7 @@ var setFormType = function () {
 	if(selectValue === "Borttappat") {
 		fillHtml(borttappatMsg);
 		showHittelon();
+		marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
 	} else if(selectValue === "Upphittat") {
 		fillHtml(upphittatMsg);
 		hideHittelon();
@@ -52,10 +65,8 @@ var setFormType = function () {
 	}
 }
 
-// Init when the page loads
-setFormType();
 
-
+console.log("Does this log?");
 
 /*
 -------------------------------------------
@@ -63,7 +74,7 @@ setFormType();
 
 // IMAGE UPLOAD CODE (have to be cleaned up)
 // var form = document.getElementById('form_upload_img');
-var fileSelect = document.getElementById('file');
+var fileSelect = document.getElementById('file_selector');
 // var uploadButton = document.getElementById('upload_img');
 var hiddenForm = document.getElementById('img_path');
 var uploaded_image_div = document.getElementById("uploaded_image");
@@ -75,6 +86,8 @@ console.log("Fileselect: " + fileSelect);
 
 fileSelect.onchange = function(event) {
 	event.preventDefault();
+
+	console.log("Trying to upload file...");
 
 	// Show progress_bar
 	progress_bar.style.display = "block";
@@ -117,7 +130,7 @@ fileSelect.onchange = function(event) {
 				
 				var server_success_msg = "Bild uppladdad!";
 				uploaded_image_div.innerHTML = contentString;
-				uploaded_image_div.style.display = "visible";
+				uploaded_image_div.style.display = "block";
 				img_upload_succeess_div.style.display =  "block";
 				img_upload_failure_div.style.display = "none";
 				img_upload_succeess_div.innerHTML = server_success_msg;
@@ -156,7 +169,102 @@ fileSelect.onchange = function(event) {
 
 
 };
-},{"./init_page":2}],2:[function(require,module,exports){
+},{"./google_maps_create":2,"./init_page":3}],2:[function(require,module,exports){
+/*jshint esnext: true */
+
+// If geolocation isn't supported we will use these standard coords.
+const sthlmlat = 59.328519;
+const sthlmlng = 18.067878;
+
+var myLatlng;
+var map;
+var marker;
+var defaultLat = sthlmlat;
+var defaultLng = sthlmlng;
+
+const getMarker = function() {
+    return marker;
+};
+
+const initMap = function(callback) {
+
+    // Get user location
+    // THEN
+    // Execute the callback I pass to the function (setLocation)
+    // The callback will execute the rest of the initialization.
+    setLocation(function(){
+        console.log("initMap()");
+
+        myLatlng = new google.maps.LatLng(defaultLat, defaultLng);
+
+        var mapOptions = {
+            zoom: 8,
+            center: myLatlng
+        };
+
+        map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+        // Place a draggable marker on the map
+        marker = new google.maps.Marker({
+            position: myLatlng,
+            map: map,
+            draggable:true,
+            title:"Drag me!"
+        });
+
+        marker.set("id", "myMarker");
+
+        callback();
+
+        whenLoaded();
+    });
+
+
+};
+
+// $("#myMarker").move(function(){console.log("dasdsad")})
+var whenLoaded = function(){
+    $("#coordslat").val(marker.position.lat);
+    $("#coordslng").val(marker.position.lng);
+
+    marker.addListener("dragend", function(){
+        console.log("Drag end");
+        $("#coordslat").val(marker.position.lat);
+        $("#coordslng").val(marker.position.lng);
+    });
+
+};
+
+function setLocation(callback) {
+
+    getLocation();
+
+    // Get user location
+    function getLocation() {
+        if (navigator.geolocation) {
+            console.log("Got geolocation!");
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            // If geolocation isn't supported we will use these standard coords.
+            console.log("No geolocation!");
+            console.log("Using default coords...");
+            callback();
+        }
+    }
+    function showPosition(position) {
+        console.log("Setting coords to user position...");
+        defaultLat = position.coords.latitude;
+        defaultLng = position.coords.longitude; 
+        callback();
+    }
+
+
+}
+
+module.exports.initMap = initMap;
+module.exports.getMarker = getMarker;
+
+},{}],3:[function(require,module,exports){
 /*jshint esnext: true */
 
 module.exports = {
@@ -177,8 +285,11 @@ module.exports = {
 		const skapa_annons_button = document.getElementById("skapa_annons_button");
 
 		// Classes to set
-		const primary = "btn btn-primary btn-lg";
-		const secondary = "btn btn-secondary btn-lg";
+		const primary = "btn btn-primary";
+		const secondary = "btn btn-secondary";
+
+		const primaryLarge = "btn btn-primary btn-lg";
+		const secondaryLarge = "btn btn-secondary btn-lg";
 
 		// Set page options depending on page
 		switch (active_page) {

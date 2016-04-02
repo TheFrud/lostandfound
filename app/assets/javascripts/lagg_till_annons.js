@@ -1,9 +1,20 @@
 /*jshint esnext: true */
 
 const initializer = require("./init_page");
+const initializer_map = require("./google_maps_create");
 
 initializer.initPage();
 
+var marker;
+
+
+
+window.initMap = function() {
+	// Note the callback function
+	// This should be implemented better
+	initializer_map.initMap(setFormType);
+
+};
 
 // Html elements
 const typSelector = $("#typ");
@@ -17,6 +28,7 @@ typSelector.change(function() {
 
 // Changes the fillThis-value.
 var setFormType = function () {
+	marker = initializer_map.getMarker();
 
 	// Messages
 	const borttappatMsg = "tappade bort";
@@ -29,6 +41,7 @@ var setFormType = function () {
 	if(selectValue === "Borttappat") {
 		fillHtml(borttappatMsg);
 		showHittelon();
+		marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
 	} else if(selectValue === "Upphittat") {
 		fillHtml(upphittatMsg);
 		hideHittelon();
@@ -51,10 +64,8 @@ var setFormType = function () {
 	}
 }
 
-// Init when the page loads
-setFormType();
 
-
+console.log("Does this log?");
 
 /*
 -------------------------------------------
@@ -62,7 +73,7 @@ setFormType();
 
 // IMAGE UPLOAD CODE (have to be cleaned up)
 // var form = document.getElementById('form_upload_img');
-var fileSelect = document.getElementById('file');
+var fileSelect = document.getElementById('file_selector');
 // var uploadButton = document.getElementById('upload_img');
 var hiddenForm = document.getElementById('img_path');
 var uploaded_image_div = document.getElementById("uploaded_image");
@@ -74,6 +85,8 @@ console.log("Fileselect: " + fileSelect);
 
 fileSelect.onchange = function(event) {
 	event.preventDefault();
+
+	console.log("Trying to upload file...");
 
 	// Show progress_bar
 	progress_bar.style.display = "block";
@@ -116,7 +129,7 @@ fileSelect.onchange = function(event) {
 				
 				var server_success_msg = "Bild uppladdad!";
 				uploaded_image_div.innerHTML = contentString;
-				uploaded_image_div.style.display = "visible";
+				uploaded_image_div.style.display = "block";
 				img_upload_succeess_div.style.display =  "block";
 				img_upload_failure_div.style.display = "none";
 				img_upload_succeess_div.innerHTML = server_success_msg;

@@ -15,7 +15,7 @@ window.initMap = function() {
 }
 
 // Change to map view
-$(window).on( "swipeleft", function( event ) {
+$(window).on( "swiperight", function( event ) {
 	var map = initializer_map.getMap();
 
 	if($("#mapView").is(":visible")){
@@ -34,7 +34,7 @@ $(window).on( "swipeleft", function( event ) {
 });
 
 // Change to list view
-$(window).on( "swiperight", function( event ) {
+$(window).on( "swipeleft", function( event ) {
 	if($("#listView").is(":visible")){
 		console.log("Already in list view...");
 		return;
@@ -120,8 +120,6 @@ upphittat_checkbox.click(() => {
 		show_upphittat = true;
 	}
 });
-
-
 },{"./index_map":2,"./init_page":3}],2:[function(require,module,exports){
 /*jshint esnext: true */
 
@@ -156,7 +154,6 @@ const initializeMap = function() {
 const getAnnonser = function() {
     console.log("getAnnonser()");
     const url = jsRoutes.controllers.HomeController.getAnnonser();
-
 
     const dataPromise = $.ajax(url);
 
@@ -202,7 +199,7 @@ const getAnnonser = function() {
                 "<img class='media-object' src='/assets/images/annons_imgs/"+item.img+"' alt='...'>" +
                  "</div>" +
                  "<br>" + item.text +
-                 "</div> dafsdsadasdasdasdasd";
+                 "</div>";
                  
 
                 var infowindow = new google.maps.InfoWindow({
@@ -255,8 +252,11 @@ module.exports = {
 		const skapa_annons_button = document.getElementById("skapa_annons_button");
 
 		// Classes to set
-		const primary = "btn btn-primary btn-lg";
-		const secondary = "btn btn-secondary btn-lg";
+		const primary = "btn btn-primary";
+		const secondary = "btn btn-secondary";
+
+		const primaryLarge = "btn btn-primary btn-lg";
+		const secondaryLarge = "btn btn-secondary btn-lg";
 
 		// Set page options depending on page
 		switch (active_page) {

@@ -14,7 +14,7 @@ window.initMap = function() {
 }
 
 // Change to map view
-$(window).on( "swipeleft", function( event ) {
+$(window).on( "swiperight", function( event ) {
 	var map = initializer_map.getMap();
 
 	if($("#mapView").is(":visible")){
@@ -33,7 +33,7 @@ $(window).on( "swipeleft", function( event ) {
 });
 
 // Change to list view
-$(window).on( "swiperight", function( event ) {
+$(window).on( "swipeleft", function( event ) {
 	if($("#listView").is(":visible")){
 		console.log("Already in list view...");
 		return;
@@ -119,4 +119,3 @@ upphittat_checkbox.click(() => {
 		show_upphittat = true;
 	}
 });
-

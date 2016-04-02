@@ -16,11 +16,13 @@
                 <span class="label label-success">Upphittat</span>
             }
             @if(annons.typ.equals("borttappat")){
-                <span class="label label-primary">Borttappat</span>
+                <span class="label label-danger">Borttappat</span>
             }
             <em>@annons.date</em>
             <br>
+                <div class="annons_text">
             @annons.text
+                </div>
         </div>
     </div>
 </div>
