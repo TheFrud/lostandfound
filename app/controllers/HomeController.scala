@@ -1,8 +1,11 @@
 package controllers
 
 import java.io.{File, FileInputStream}
+import java.net.{URL, URI}
 import javax.imageio.ImageIO
 import javax.inject._
+import awscala.s3.S3
+import com.amazonaws.regions.Region
 import com.sksamuel.scrimage.ScaleMethod.FastScale
 import com.sksamuel.scrimage._
 import com.sksamuel.scrimage.nio.JpegWriter
@@ -27,6 +30,8 @@ import scala.concurrent.Future
 
 @Singleton
 class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
+
+
 
   // Form stuff
 
@@ -105,7 +110,6 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
       "posted" -> annons.posted
     )
   }
-
   implicit val personFormat = Json.format[Annons]
 
 
@@ -241,11 +245,94 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
         val randomGenerator = new Random()
         val cleanedFileName = picture.filename.replaceAll("[^a-zA-Z0-9.-]", "_")
         val filename = randomGenerator.nextLong() + "_" + cleanedFileName
-        val imagefolder = "public/images/annons_imgs/"
+        val imagefolder = "app/assets/images/annons_imgs/"
+        val imagepath = imagefolder + filename
+
+        val imageFile = new java.io.File(imagepath)
+        picture.ref.moveTo(imageFile)
+
+        println("DEBUG: 1")
+
+        // Check environment (local or production?)
+        val inProduction = dao.AppStringResources.inProduction.get
+        val environment = dao.AppStringResources.environment.get
+
+        println("DEBUG: 2")
+
+        // Setup Image Manipulation stuff
+        implicit val writer = JpegWriter().withCompression(50)
+        val in = new FileInputStream(imageFile) // input stream
+
+        println("DEBUG: 22")
+
+        // Fetch overlay img
+        // Check if in production
+        val bufferedImage = if(inProduction){
+
+          println("DEBUG: 222")
+          // Fetch overlay image from server
+          // Adding the environment variable to the path
+          println(environment+"/"+imagefolder + "image_overlay.png")
+          // ImageIO.read(new File(environment+"/"+imagefolder + "image_overlay.png"))
+          ImageIO.read(new URL(environment+"/"+imagefolder + "image_overlay.png").openStream())
+        } else {
+
+          // Fetch overlay image locally
+          // No need to add the environment variable to the path
+          ImageIO.read(new File(imagefolder + "image_overlay.png"))
+        }
+
+        println("DEBUG: 3")
+
+        // Get the overlay image into a datatype we can handle
+        val scrimage = com.sksamuel.scrimage.Image.awtToScrimage(bufferedImage)
+
+        println("DEBUG: 4")
+
+        // Save file
+        val out = Image.fromStream(in).fit(300, 300).overlay(scrimage).output(new File(imagepath)) // output stream
+
+        println("DEBUG: 5")
+
+        // Are we in production?
+        // If we are not, we are done here.
+        if(inProduction){
+          // If true (in production)
+
+          // Setting up S3
+          implicit val s3 = S3()
+          val mybucket = s3.bucket("lostandfound-testbucket2")
+          val b = mybucket.get
+          println("DEBUG: 6")
+          b.put(imagepath, new java.io.File(imagepath))
+          println("DEBUG: 7")
+        }
+
+        Ok(filename)
+      }
+    }.getOrElse(BadRequest("Missing picture!"))
+
+
+  }
+  /*
+  def upload = Action(parse.multipartFormData) {implicit request =>
+    println(request.body)
+    request.body.file("img").map {
+      picture => {
+        val randomGenerator = new Random()
+        val cleanedFileName = picture.filename.replaceAll("[^a-zA-Z0-9.-]", "_")
+        val filename = randomGenerator.nextLong() + "_" + cleanedFileName
+        val imagefolder = sys.env("IMG_FOLDER")+ "/annons_imgs/"
         val imagepath = imagefolder + filename
         val imageFile = new java.io.File(imagepath)
         picture.ref.moveTo(imageFile)
 
+        // S3 test
+        implicit val s3 = S3()
+        val mybucket = s3.bucket("lostandfound-testbucket2")
+        val b = mybucket.get
+        b.put("test.txt", new java.io.File("test.txt"))
+        //
 
 
         // Fetch overlay img
@@ -263,7 +350,7 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
 
 
   }
-
+*/
   def javascriptRoutes = Action { implicit request =>
     Ok(
       JavaScriptReverseRouter("jsRoutes")(

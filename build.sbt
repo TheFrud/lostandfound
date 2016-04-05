@@ -21,7 +21,8 @@ libraryDependencies ++= Seq(
   "org.webjars.bower" % "imgLiquid" % "0.9.944",
   "org.webjars.bower" % "compass-mixins" % "0.12.7",
   "org.webjars" % "jquery-mobile" % "1.4.5",
-  "com.sksamuel.scrimage" % "scrimage-core_2.11" % "2.1.5"
+  "com.sksamuel.scrimage" % "scrimage-core_2.11" % "2.1.5",
+  "com.github.seratch" %% "awscala" % "0.5.+"
 )
 
 resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
