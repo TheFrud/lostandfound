@@ -1,6 +1,22 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /*jshint esnext: true */
 
+
+// Sets the view
+
+const mapViewDiv = document.getElementById("mapView");
+const listViewDiv = document.getElementById("listView");
+
+
+if(localStorage.getItem("currentView") === null || localStorage.getItem("currentView") === undefined) {
+	// If the user has never changed the view (localstorage not set) this code is run.
+	mapViewDiv.style.display = "block";	
+} else if(localStorage.getItem("currentView") === "listView"){
+	listViewDiv.style.display = "block";
+} else if(localStorage.getItem("currentView") === "mapView") {
+	mapViewDiv.style.display = "block";
+}
+
 // "Imagefitting"
 // https://github.com/karacas/imgLiquid
 $(".imgLiquidFill").imgLiquid();
@@ -16,6 +32,16 @@ window.initMap = function() {
 
 // Change to map view
 $(window).on( "swiperight", function( event ) {
+	changeToMapView();
+});
+
+// Change to list view
+$(window).on( "swipeleft", function( event ) {
+	changeToListView();
+});
+
+// Functions for when the views shift
+const changeToMapView = function() {
 	var map = initializer_map.getMap();
 
 	if($("#mapView").is(":visible")){
@@ -28,13 +54,12 @@ $(window).on( "swiperight", function( event ) {
 		var center = map.getCenter();
 		google.maps.event.trigger(map, "resize");
 		map.setCenter(center);
+	});	
 
-	});
-	
-});
+	localStorage.setItem("currentView", "mapView");
+}
 
-// Change to list view
-$(window).on( "swipeleft", function( event ) {
+const changeToListView = function() {
 	if($("#listView").is(":visible")){
 		console.log("Already in list view...");
 		return;
@@ -43,9 +68,13 @@ $(window).on( "swipeleft", function( event ) {
 	console.log("SWIPE TO LIST");
 	$("#mapView").fadeOut("slow", function() {
 		$("#listView").show();
-	});
+	});	
 
-});
+	localStorage.setItem("currentView", "listView");
+}
+
+
+/* --- */
 
 
 

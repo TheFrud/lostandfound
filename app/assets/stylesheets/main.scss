@@ -2,8 +2,8 @@
 /* @import "lib/compass-mixins/lib/compass"; */
 
 $btn-primary-color:              #FFFFFF !default;
-$btn-primary-bg:                 #3296E1 !default;
-$btn-primary-border:             #3296E1 !default;
+$btn-primary-bg:                 #3197E1 !default;
+$btn-primary-border:             #3197E1 !default;
 
 $label-success-bg:              #00E64D !default;
 $label-danger-bg:               #FD7567 !default;
@@ -83,11 +83,18 @@ textarea {
 /*
 Nav bar
 */
-#nav_bar {
+#nav_bar_top {
     border-radius: 0px;
     border: 1px;
     padding: 10px; 
-    background-color: #ABCBE8;
+    background-color: #344860;
+}
+
+#nav_bar_bottom {
+    border-radius: 0px;
+    border: 1px;
+    padding: 10px; 
+    background-color: #344860;
 }
 
 /*
@@ -95,43 +102,44 @@ LOGO
 */
 
 #large_logo {
-    display:inline;
+    display:none;
 }
 
 #small_logo {
     display: none;
 }
 
-@media (max-width: 320px) {
+@media (max-width: 400px) {
     #large_logo {
         display: none;
     }
     #small_logo {
         display: inline;
-        max-width: 45px;
-        max-height: 45px;
+        max-width: 35px;
+        max-height: 35px;
     }
 }
 
-@media (min-width: 360px) {
-    #large_logo {
-        display: none;
-    }
-    #small_logo {
-        display: inline;
-        /* These values should be higher. Will fix
-        No difference from the smaller devices now.
-        */
-        max-width: 65px;
-        max-height: 45px;
-    }
-}
 
-@media (min-width: 414px) {
+@media (min-width: 400px) {
     #large_logo {
         display: inline;
         max-width: 125px;
-        max-height: 125px;
+        max-height: 35px;
+
+    }
+    #small_logo {
+        display: none;
+    }
+}
+
+
+@media (min-width: 500px) {
+    
+    #large_logo {
+        display: inline;
+        max-width: 125px;
+        max-height: 35px;
 
     }
     #small_logo {
@@ -150,13 +158,19 @@ Index
 #index_views {
     border-radius: 7px;
     background-color: #EDEFF0;
+    padding: 20px;
     /*margin: 20px;*/
 }
 
 #filter_panel {
 
     padding: 10px; 
-    background-color: white;  
+    // background-color: white;  
+}
+
+#filter_text {
+    color: white;
+    font-size: 85%;
 }
 
 /*

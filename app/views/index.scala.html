@@ -10,34 +10,7 @@ defer></script>
 @main("Annonser") {
 
     <div id="index_views">
-        <div class="row" id="filter_panel">
-            <div class="col-xs-3">
-                <div class="input-group">
-
-                    Filter:
-
-                </div>
-            </div>
-            <div class="col-xs-3">
-                <div class="input-group">
-
-                    <span>Borttappat</span> &nbsp; <input type="checkbox" id="borttappat_checkbox">
-
-                </div>
-            </div>
-            <div class="col-xs-3">
-                <div class="input-group">
-
-                    <span>Upphittat</span> &nbsp; <input type="checkbox" id="upphittat_checkbox">
-
-
-                </div>
-            </div>
-            <div class="col-xs-3">Antal...</div>
-
-
-        </div>
-        <div class="row" id="mapView">
+        <div class="row" id="mapView" style="display: none">
             <div class="col-xs-1">
             </div>
             <div class="col-xs-10">
@@ -67,6 +40,8 @@ defer></script>
                 }
             </div>
         </div>
+
+        @searchbar()
 
     </div>
 
