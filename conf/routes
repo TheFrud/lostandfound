@@ -7,6 +7,7 @@ GET     /setupdb                    controllers.HomeController.setupdb
 
 # Navigation
 GET     /                           controllers.HomeController.index
+# GET     /                           controllers.HomeController.index(searchResult: List[models.Annons] ?= List(), search: Boolean ?= false)
 GET     /laggtillannons             controllers.HomeController.laggTillAnnons
 GET     /annons/:id                 controllers.HomeController.annonsPage(id: Long)
 
@@ -22,6 +23,7 @@ POST      /postannons               controllers.HomeController.postAnnons
 GET       /getannonser              controllers.HomeController.getAnnonser
 POST      /removeannons             controllers.HomeController.removeAnnons(id: Long)
 POST      /getannons                controllers.HomeController.getAnnons
+POST      /search                   controllers.HomeController.search
 
 # TEST
 POST      /upload                   controllers.HomeController.upload

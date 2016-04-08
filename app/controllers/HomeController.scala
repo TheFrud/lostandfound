@@ -10,7 +10,7 @@ import com.sksamuel.scrimage.ScaleMethod.FastScale
 import com.sksamuel.scrimage._
 import com.sksamuel.scrimage.nio.JpegWriter
 import dao.{MyHash, AnnonsDAO}
-import models.{RemoveAnnonsForm, Annons}
+import models.{SearchAnnons, RemoveAnnonsForm, Annons}
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.libs.json._
@@ -22,6 +22,7 @@ import play.api.mvc._
 import play.api.routing._
 
 import scala.concurrent.Future
+import scala.util.{Failure, Success}
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the
@@ -34,12 +35,6 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
 
 
   // Form stuff
-
-  val removeAnnonsForm = Form(
-    mapping(
-      "password" -> text
-    ) (RemoveAnnonsForm.apply)(RemoveAnnonsForm.unapply)
-  )
 
   val annonsForm = Form(
     mapping(
@@ -62,6 +57,20 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
     ) (Annons.apply)(Annons.unapply)
   )
 
+  val removeAnnonsForm = Form(
+    mapping(
+      "password" -> text
+    ) (RemoveAnnonsForm.apply)(RemoveAnnonsForm.unapply)
+  )
+
+  val searchAnnonsForm = Form(
+    mapping(
+      "typ" -> text,
+      "category" -> text,
+      "county" -> text,
+      "search_string" -> text
+    ) (SearchAnnons.apply)(SearchAnnons.unapply)
+  )
 
   /*
   verifying("Failed form constraints!", fields => fields match {
@@ -120,11 +129,98 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
   }
 
   // MAIN CONTROLLERS
-  def index = Action.async { implicit request =>
-    // val annonser = List(Annons(0, "upphittat", "Såg", "Hej jag hittade en såg i mitt garage!", Some(25)), Annons(1, "upphittat", "Katt", "En katt sprang in i mitt hus.", None), Annons(2, "borttappat", "Sax", "Hejsan text.", None))
-    val annonser = annonsDao.getAllNoPasswords
-    annonser.map { a =>  Ok(views.html.index(a))}
+  def index() = Action.async { implicit request =>
+      val annonser = annonsDao.getAllNoPasswords
+      annonser.map { a =>  Ok(views.html.index(a,Json.obj("annonser" -> a), searchAnnonsForm))}
   }
+
+/*
+  def search = Action.async { implicit request =>
+
+    searchAnnonsForm.bindFromRequest.fold(
+      formWithErrors => {
+        println("Search request went like shit")
+
+        Future {BadRequest("Bad search...")}
+
+      },
+      searchRequest => {
+        println("Search request came through")
+        val allAnnonserFuture = annonsDao.getAllNoPasswords
+        val filteredAnnonser = allAnnonserFuture.map(allaAnnonser => allaAnnonser.filter(annons => searchFilter(annons, searchRequest)))
+
+        /*
+        filteredAnnonser.map {annonser =>  {
+
+        }}
+        */
+
+        // filteredAnnonser.onComplete(annonser => Redirect(routes.HomeController.index(searchResult = annonser, search=true)))
+
+
+        filteredAnnonser onComplete {
+          case Success(annonser) => Redirect(routes.HomeController.index(searchResult = annonser, search=true))
+          case Failure(t) => Redirect(routes.HomeController.index())
+        }
+
+      }
+    )
+    Future {Ok}
+
+  }
+*/
+
+    def search = Action.async { implicit request =>
+
+      searchAnnonsForm.bindFromRequest.fold(
+        formWithErrors => {
+          println("Search request went like shit")
+
+          Future {BadRequest("Bad search...")}
+
+        },
+        searchRequest => {
+          println("Search request came through")
+          val allAnnonserFuture = annonsDao.getAllNoPasswords
+          val filteredAnnonser = allAnnonserFuture.map(allaAnnonser => allaAnnonser.filter(annons => searchFilter(annons, searchRequest)))
+
+          filteredAnnonser.map {annonser => Ok(views.html.index(annonser,Json.obj("annonser" -> annonser), searchAnnonsForm))}
+
+        }
+      )
+
+    }
+
+    def searchFilter(annons: Annons, searchedAnnons: SearchAnnons): Boolean = {
+
+      if(!annons.typ.equals(searchedAnnons.typ) && !searchedAnnons.typ.equals("Alla")){
+        return false
+      }
+
+      if(!annons.category.equals(searchedAnnons.category) && !searchedAnnons.category.equals("Alla")){
+        return false
+      }
+
+      if(!annons.county.equals(searchedAnnons.county) && !searchedAnnons.county.equals("Alla")){
+        return false
+      }
+
+      true
+
+      // Easy stuff
+
+
+      // More complicated stuff (will implement later on)
+      // val rubrikSearch = annons.rubrik.filter {word => word.eq}
+
+
+
+
+
+    }
+
+
+
 
   def laggTillAnnons = Action { implicit request =>
     Ok(views.html.lagg_till_annons(annonsForm))

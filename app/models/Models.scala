@@ -27,3 +27,10 @@ case class Annons(
 case class RemoveAnnonsForm(
                            password: String
                            )
+
+case class SearchAnnons(
+                        typ: String,
+                        category: String,
+                        county: String,
+                        search_string: String
+                       )

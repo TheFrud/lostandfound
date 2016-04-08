@@ -1,4 +1,12 @@
-@(annonser: List[models.Annons])(implicit messages: Messages, flash: Flash)
+@(annonser: List[models.Annons], annonserJson: play.api.libs.json.JsValue, searchAnnonsForm: Form[SearchAnnons])(implicit messages: Messages, flash: Flash)
+@import play.api.libs.json.Json
+
+<!-- Puts the annonser-json in the javascript -->
+
+<script>
+        var annonserFirstParse = @Html(Json.stringify(annonserJson))
+        var annonser = annonserFirstParse.annonser;
+</script>
 
 <script src="@routes.Assets.versioned("lib/jquery/jquery.min.js")" type="text/javascript"></script>
 <script src="@routes.Assets.versioned("javascripts/browserified/index.js")" type="text/javascript" defer></script>
@@ -38,10 +46,35 @@ defer></script>
                 @for(a <- annonser.sortWith((a: Annons, b: Annons) => a.posted.compareTo(b.posted) > 0)) {
                     @annons_listed(a)
                 }
-            </div>
-        </div>
 
-        @searchbar()
+
+
+            </div>
+            @* Pagination
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">4</a></li>
+                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+            *@
+        @searchbar(annonser, searchAnnonsForm)
 
     </div>
 

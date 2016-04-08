@@ -1,6 +1,5 @@
 /*jshint esnext: true */
 
-
 // Sets the view
 
 const mapViewDiv = document.getElementById("mapView");

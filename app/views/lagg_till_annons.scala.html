@@ -44,7 +44,7 @@ defer></script>
 
                         <!-- Rubrik -->
                     <fieldset class="form-group">
-                        <label for="rubrik">Rubrik</label>
+                        <label for="rubrik">Rubrik*</label>
                         <small class="text-muted"></small>
                         @helper.inputText(annonsForm("rubrik"), 'id -> "rubrik", 'class -> "form-control", '_label -> null, 'required -> true, 'maxlength -> 40)
                     </fieldset>
@@ -58,7 +58,7 @@ defer></script>
 
                     <!-- Datum -->
                     <fieldset class="form-group">
-                        <label for="datum">Datum</label>
+                        <label for="datum">Datum *</label>
                         <br>
                         <small class="text-muted">När försvann objektet?</small>
                         @helper.inputDate(annonsForm("date"), '_label -> null, 'id -> "datum", '_showConstraints -> false)
@@ -201,7 +201,7 @@ defer></script>
 
                         <!-- E-post -->
                     <fieldset class="form-group">
-                        <label for="uploader_email">E-post</label>
+                        <label for="uploader_email">E-post *</label>
                         <small class="text-muted"></small>
                         @helper.inputText(annonsForm("uploader_email"), '_label -> null, 'type -> "email", 'id -> "uploader_email", 'required -> true , 'maxlength -> 100)
                     </fieldset>
@@ -218,7 +218,7 @@ defer></script>
                     <!-- Password -->
 
                     <fieldset class="form-group">
-                        <label for="uploader_password">Lösenord</label>
+                        <label for="uploader_password">Lösenord *</label>
                         <small class="text-muted"></small>
                         @helper.inputText(annonsForm("uploader_password"), '_label -> null, 'type -> "password", 'id -> "uploader_password", 'required -> true, 'minlength -> "4")
                     </fieldset>

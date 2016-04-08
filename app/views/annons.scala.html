@@ -33,7 +33,7 @@ defer></script>
                         } else {
                             <strong>Hittades:</strong>
                         }
-                        @annons.date
+                        @utilities.DateFormatter.format(annons.date)
                         <br>
                         <strong>Beskrivning:</strong>
                         <p>@annons.text</p>

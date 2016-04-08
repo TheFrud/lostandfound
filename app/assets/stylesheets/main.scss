@@ -170,12 +170,21 @@ Index
 
 #filter_text {
     color: white;
-    font-size: 85%;
+    font-size: 85%; 
+}
+
+#matches_text {
+    color: white;
+    font-size: 85%; 
 }
 
 /*
 Annons listed
 */
+
+#listView {
+    margin-bottom: 100px;
+}
 
 .annons_listed {
     border-radius: 7px;

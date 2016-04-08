@@ -12,7 +12,7 @@ const getMap = function() {
 
 const getMarkers = function() {
     return markers;
-}
+};
 
 const initializeMap = function() {
 
@@ -25,20 +25,13 @@ const initializeMap = function() {
 
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
-    getAnnonser();    
+    addAnnonserToMap();    
 };
 
-const getAnnonser = function() {
-    console.log("getAnnonser()");
-    const url = jsRoutes.controllers.HomeController.getAnnonser();
+const addAnnonserToMap = function() {
 
-    const dataPromise = $.ajax(url);
-
-    dataPromise.then(function(data){
-        console.log(data);
-
-        data.annonser.forEach(function(item){
-
+        annonser.forEach((item) => {
+            
             // Tittar ifall annonsen innehåller koordinater.
             // Annars är ju markörer irrelevant.
             if(item.hasOwnProperty('coordslat') && item.hasOwnProperty("coordslng")){
@@ -61,15 +54,6 @@ const getAnnonser = function() {
                     marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');   
                 }
                 
-                // Gör så att en inforuta kommer upp när man klickar på markören.
-                /*
-                var contentString = "<div class='map-info-window'>" +
-                "<h3><a href='http://192.168.1.45:9000/annons/"+item.id+"'>" + item.rubrik + "</a></h3>" + 
-                "<img class='media-object' src='/assets/images/annons_imgs/"+item.img+"' alt='...'>" +
-                 "<br>" + item.text +
-                 "</div> dafsdsadasdasdasdasd";
-                */
-                 
                 var contentString = "<div class='map-info-window'>" +
                 "<h3><a href='http://192.168.1.45:9000/annons/"+item.id+"'>" + item.rubrik + "</a></h3>" + 
                 "<div class='imgLiquidFill imgLiquid' style='width:50px; height:50px;'>" +
@@ -92,17 +76,12 @@ const getAnnonser = function() {
                 });
 
                 markers.push(marker);    
-
             }
-
-
-
         });
-
-    }, function(error){
-        console.log(error);
-    });        
+        
 };
+
+
 
 // Exports
 module.exports.initializeMap = initializeMap;
