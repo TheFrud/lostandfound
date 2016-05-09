@@ -28,11 +28,11 @@ function initMap() {
     });
 
     // Set marker color
-    if(typ === "borttappat") {
+    if(typ === "Borttappat") {
         marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
     }
 
-    else if(typ === "upphittat") {
+    else if(typ === "Upphittat") {
         marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');  
     }
 

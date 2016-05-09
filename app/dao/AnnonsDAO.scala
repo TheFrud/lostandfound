@@ -65,11 +65,11 @@ class AnnonsDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
         annonser.schema.create,
 
         annonser ++= Seq(
-          Annons(None, "upphittat", "Häst hittad!", "Hittade en häst på gården...", None, None, None, defaultImg, getCurrentDate, "Djur", "Gävleborgs län", "Fredrik Johansson", "0702915403", "thefrud@gmail.com", MyHash.createPassword("password1"), getCurrentDate),
-          Annons(None, "borttappat", "Katt bortsprungen", "Kära Elsa är bortsprungen. Hjälp mig hitta henne.", None, None, None, defaultImg, getCurrentDate, "Mobiltelefon", "Tuborgs län", "Fredrik Johansson", "0702915403", "thefrud@gmail.com", MyHash.createPassword("password2"), getCurrentDate),
-          Annons(None, "upphittat", "Väska", "En väska!", None, None, None, defaultImg, getCurrentDate, "Djur", "Gävleborgs län", "Fredrik Johansson", "0702915403", "thefrud@gmail.com", MyHash.createPassword("password3"), getCurrentDate),
-          Annons(None, "borttappat", "Ring", "Tappade bort en ring. :(", None, None, None, defaultImg, getCurrentDate, "Djur", "Kritvita län", "Fredrik Johansson", "0702915403", "thefrud@gmail.com", MyHash.createPassword("password4"), getCurrentDate),
-          Annons(None, "borttappat", "Kraftrör", "Kraftrör säger jag bara. Hjälp mig hitta det plx!", None, None, None, defaultImg, getCurrentDate, "Mobiltelefon", "Dagukar län", "Fredrik Johansson", "0702915403", "thefrud@gmail.com", MyHash.createPassword("password5"), getCurrentDate)
+          Annons(None, "Upphittat", "Häst hittad!", "Hittade en häst på gården...", None, None, None, defaultImg, getCurrentDate, "Djur", "Gävleborgs län", "Fredrik Johansson", "0702915403", "thefrud@gmail.com", MyHash.createPassword("password1"), getCurrentDate),
+          Annons(None, "Borttappat", "Katt bortsprungen", "Kära Elsa är bortsprungen. Hjälp mig hitta henne.", None, None, None, defaultImg, getCurrentDate, "Mobiltelefon", "Tuborgs län", "Fredrik Johansson", "0702915403", "thefrud@gmail.com", MyHash.createPassword("password2"), getCurrentDate),
+          Annons(None, "Upphittat", "Väska", "En väska!", None, None, None, defaultImg, getCurrentDate, "Djur", "Gävleborgs län", "Fredrik Johansson", "0702915403", "thefrud@gmail.com", MyHash.createPassword("password3"), getCurrentDate),
+          Annons(None, "Borttappat", "Ring", "Tappade bort en ring. :(", None, None, None, defaultImg, getCurrentDate, "Djur", "Kritvita län", "Fredrik Johansson", "0702915403", "thefrud@gmail.com", MyHash.createPassword("password4"), getCurrentDate),
+          Annons(None, "Borttappat", "Kraftrör", "Kraftrör säger jag bara. Hjälp mig hitta det plx!", None, None, None, defaultImg, getCurrentDate, "Mobiltelefon", "Dagukar län", "Fredrik Johansson", "0702915403", "thefrud@gmail.com", MyHash.createPassword("password5"), getCurrentDate)
         )
 
       )

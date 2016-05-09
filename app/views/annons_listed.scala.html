@@ -12,10 +12,10 @@
         <div class="media-body">
             <h4 class="media-heading"><a href="@routes.HomeController.annonsPage(annons.id.get)">@annons.rubrik</a></h4>
 
-            @if(annons.typ.equals("upphittat")){
+            @if(annons.typ.equals("Upphittat")){
                 <span class="label label-success">Upphittat</span>
             }
-            @if(annons.typ.equals("borttappat")){
+            @if(annons.typ.equals("Borttappat")){
                 <span class="label label-danger">Borttappat</span>
             }
             <em>Lades in: @utilities.DateFormatter.format(annons.posted)</em>

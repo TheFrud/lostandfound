@@ -17,8 +17,10 @@ if(localStorage.getItem("currentView") === null || localStorage.getItem("current
 	mapViewDiv.style.display = "block";	
 } else if(localStorage.getItem("currentView") === "listView"){
 	listViewDiv.style.display = "block";
+	$("#toggleView").html("<i class='fa fa-globe'></i> Kartvy");
 } else if(localStorage.getItem("currentView") === "mapView") {
 	mapViewDiv.style.display = "block";
+	$("#toggleView").html("<i class='fa fa-list'></i> Listvy");
 }
 
 console.log(localStorage.getItem("currentTyp"));
@@ -66,6 +68,18 @@ window.initMap = function() {
 	initializer_map.initializeMap();
 }
 
+$("#toggleView").on("click", function(){
+	console.log("Clicked");
+	const currentView = localStorage.getItem("currentView");
+
+	if(currentView == "mapView"){
+		changeToListView();
+	} else if(currentView == "listView"){
+		changeToMapView();
+	}
+	
+});
+
 // Change to map view
 $(window).on( "swiperight", function( event ) {
 	changeToMapView();
@@ -92,6 +106,8 @@ const changeToMapView = function() {
 		map.setCenter(center);
 	});	
 
+	$("#toggleView").html("<i class='fa fa-list'></i> Listvy");
+
 	localStorage.setItem("currentView", "mapView");
 }
 
@@ -105,6 +121,8 @@ const changeToListView = function() {
 	$("#mapView").fadeOut("slow", function() {
 		$("#listView").show();
 	});	
+
+	$("#toggleView").html("<i class='fa fa-globe'></i> Kartvy");
 
 	localStorage.setItem("currentView", "listView");
 }
