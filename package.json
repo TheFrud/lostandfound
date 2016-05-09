@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "play app",
   "main": "index.js",
+  "engines": {
+    "node": "5.7.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
