@@ -1,3 +1,6 @@
+// Set current page
+localStorage.setItem("currentPage", "Annons");
+
 const initializer = require("./init_page");
 
 initializer.initPage();

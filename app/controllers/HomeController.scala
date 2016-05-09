@@ -67,8 +67,7 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
     mapping(
       "typ" -> text,
       "category" -> text,
-      "county" -> text,
-      "search_string" -> text
+      "county" -> text
     ) (SearchAnnons.apply)(SearchAnnons.unapply)
   )
 
@@ -192,6 +191,12 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
     }
 
     def searchFilter(annons: Annons, searchedAnnons: SearchAnnons): Boolean = {
+
+      /*
+      if(!searchedAnnons.search_string.equals("")){
+
+      }
+      */
 
       if(!annons.typ.equals(searchedAnnons.typ) && !searchedAnnons.typ.equals("Alla")){
         return false

@@ -31,6 +31,13 @@ case class RemoveAnnonsForm(
 case class SearchAnnons(
                         typ: String,
                         category: String,
-                        county: String,
-                        search_string: String
+                        county: String
                        )
+/*
+case class SearchAnnons(
+                         typ: String,
+                         category: String,
+                         county: String,
+                         search_string: String
+                       )
+                       */

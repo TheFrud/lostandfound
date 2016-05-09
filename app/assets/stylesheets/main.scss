@@ -97,6 +97,9 @@ Nav bar
     background-color: #344860;
 }
 
+.navbar-fixed-bottom {
+    bottom: -50;
+}
 /*
 LOGO
 */
@@ -164,7 +167,7 @@ Index
 
 #filter_panel {
 
-    padding: 10px; 
+    padding: 5px; 
     // background-color: white;  
 }
 
@@ -176,6 +179,10 @@ Index
 #matches_text {
     color: white;
     font-size: 85%; 
+}
+
+.filterLabel {
+    color: white;
 }
 
 /*

@@ -46,11 +46,11 @@ const addAnnonserToMap = function() {
                 });
 
                 // Set marker color
-                if(item.typ === "borttappat") {
+                if(item.typ === "Borttappat") {
                     marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
                 }
 
-                else if(item.typ === "upphittat") {
+                else if(item.typ === "Upphittat") {
                     marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');   
                 }
                 

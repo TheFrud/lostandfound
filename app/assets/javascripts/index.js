@@ -1,11 +1,17 @@
 /*jshint esnext: true */
 
-// Sets the view
+// Set current page
+localStorage.setItem("currentPage", "Annonser");
 
+// Get url (to check if user loaded page after a search or not)
+const pathName = window.location.pathname;
+console.log(pathName)
+
+// Sets the view
 const mapViewDiv = document.getElementById("mapView");
 const listViewDiv = document.getElementById("listView");
 
-
+// Get current view from localStorage and set it up accordingly
 if(localStorage.getItem("currentView") === null || localStorage.getItem("currentView") === undefined) {
 	// If the user has never changed the view (localstorage not set) this code is run.
 	mapViewDiv.style.display = "block";	
@@ -14,6 +20,38 @@ if(localStorage.getItem("currentView") === null || localStorage.getItem("current
 } else if(localStorage.getItem("currentView") === "mapView") {
 	mapViewDiv.style.display = "block";
 }
+
+console.log(localStorage.getItem("currentTyp"));
+
+// Setup filter/search options. Get from localStorage.
+
+// Setup typ
+if(!localStorage.getItem("currentTyp") || pathName == "/") {
+	// Set default
+	$("#typ").val("Alla");
+} else {
+	$("#typ").val(localStorage.getItem("currentTyp"));
+	// localStorage.removeItem("currentTyp");
+}
+
+// Setup category
+if(!localStorage.getItem("currentCategory") || pathName == "/") {
+	// Set default
+	$("#category").val("Alla");
+} else {
+	$("#category").val(localStorage.getItem("currentCategory"));
+	// localStorage.removeItem("currentCategory");
+}
+// Setup county
+if(!localStorage.getItem("currentCounty") || pathName == "/") {
+	// Set default
+	$("#county").val("Alla");
+} else {
+	$("#county").val(localStorage.getItem("currentCounty"));
+	// localStorage.removeItem("currentCounty");
+}
+
+
 
 // "Imagefitting"
 // https://github.com/karacas/imgLiquid
@@ -71,10 +109,51 @@ const changeToListView = function() {
 	localStorage.setItem("currentView", "listView");
 }
 
+// Search stuff
+const typSelector = $("#typ");
+const categorySelector = $("#category");
+const countySelector = $("#county");
+
+// When filter changes - Do search
+// Typ change
+typSelector.change(function() {
+	// Get current value of selector
+	const selected = $('#typ option:selected').text();
+
+	// Save current value in localStorage
+	localStorage.setItem("currentTyp", selected);
+
+	// Execute search
+	$("#executeSearch").click();
+
+});
+
+// Category change
+categorySelector.change(function() {
+	// Get current value of selector
+	const selected = $('#category option:selected').text();
+
+	// Save current value in localStorage
+	localStorage.setItem("currentCategory", selected);
+
+	// Execute search
+	$("#executeSearch").click();
+
+});
+// County change
+countySelector.change(function() {
+	// Get current value of selector
+	const selected = $('#county option:selected').text();
+
+	// Save current value in localStorage
+	localStorage.setItem("currentCounty", selected);
+
+	// Execute search
+	$("#executeSearch").click();
+
+});
 
 /* --- */
-
-
 
 // Borttappat/Upphittat Toggle
 const borttappat_checkbox = $("#borttappat_checkbox");
@@ -99,7 +178,7 @@ borttappat_checkbox.click(() => {
 
 	if(show_borttappat === true){
 		markers.forEach((m) => {
-			if(m.typ === "borttappat") {
+			if(m.typ === "Borttappat") {
 				m.setMap(null);
 			}
 		})
@@ -108,7 +187,7 @@ borttappat_checkbox.click(() => {
 
 	} else if(show_borttappat === false) {
 		markers.forEach((m) => {
-			if(m.typ === "borttappat") {
+			if(m.typ === "Borttappat") {
 				m.setMap(map);
 			}
 		})
@@ -130,7 +209,7 @@ upphittat_checkbox.click(() => {
 
 	if(show_upphittat === true){
 		markers.forEach((m) => {
-			if(m.typ === "upphittat") {
+			if(m.typ === "Upphittat") {
 				m.setMap(null);
 			}
 		})
@@ -139,7 +218,7 @@ upphittat_checkbox.click(() => {
 
 	} else if(show_upphittat === false) {
 		markers.forEach((m) => {
-			if(m.typ === "upphittat") {
+			if(m.typ === "Upphittat") {
 				m.setMap(map);
 			}
 		})

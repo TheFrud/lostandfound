@@ -1,5 +1,8 @@
 /*jshint esnext: true */
 
+// Set current page
+localStorage.setItem("currentPage", "Lägg till annons");
+
 const initializer = require("./init_page");
 const initializer_map = require("./google_maps_create");
 
