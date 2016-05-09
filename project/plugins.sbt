@@ -21,4 +21,4 @@ addSbtPlugin("org.irundaia.sbt" % "sbt-sassify" % "1.4.2")
 // addSbtPlugin("com.jamesward" % "play-auto-refresh" % "0.0.14")
 
 // Image minifier
-addSbtPlugin("com.slidingautonomy.sbt" % "sbt-imagemin" % "1.0.1")
+// addSbtPlugin("com.slidingautonomy.sbt" % "sbt-imagemin" % "1.0.1")

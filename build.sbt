@@ -26,9 +26,3 @@ libraryDependencies ++= Seq(
 )
 
 resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
-
-pipelineStages := Seq(imagemin)
-
-ImageMinKeys.progressive       := true  // lossless conversion to progressive JPEG images
-ImageMinKeys.interlaced        := true  // interlaced GIF images
-ImageMinKeys.optimizationLevel := 3     // optimization level 0 - 7 for PNG images
