@@ -55,7 +55,7 @@ const addAnnonserToMap = function() {
                 }
                 
                 var environmentPath = document.getElementById("environmentPath");
-                const annonsPage = jsRoutes.controllers.HomeController.annons();
+                const annonsPage = jsRoutes.controllers.HomeController.annonsPage();
 
                 var contentString = "<div class='map-info-window'>" +
                 "<h3><a href='"+annonsPage+"/"+item.id+"'>" + item.rubrik + "</a></h3>" + 
