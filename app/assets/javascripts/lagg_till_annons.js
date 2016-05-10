@@ -127,8 +127,10 @@ fileSelect.onchange = function(event) {
 			
 				hiddenForm.value = xhr.responseText;
 				console.log("Server response: " + xhr.responseText);
+				var environmentPath = document.getElementById("environmentPath");
 
-				var contentString = "<img class='media-object img-rounded' src='/assets/images/annons_imgs/"+xhr.responseText+"' alt='...'><br>";
+
+				var contentString = "<img class='media-object img-rounded' src='"+environmentPath+"/assets/images/annons_imgs/"+xhr.responseText+"' alt='...'><br>";
 				
 				var server_success_msg = "Bild uppladdad!";
 				uploaded_image_div.innerHTML = contentString;

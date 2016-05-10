@@ -13,7 +13,7 @@ defer></script>
 
 
     @main("Skapa annons") {
-
+        <div hidden id="environmentPath">@dao.AppStringResources.imagepath</div>
 
         @helper.form(action = routes.HomeController.postAnnons(), 'id -> "annons_form") {
             <div id="form_panel">
