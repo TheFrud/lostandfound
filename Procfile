@@ -1,1 +1,1 @@
-web: target/universal/stage/bin/lostandfound -Dhttp.port=${PORT} -Dplay.evolutions.db.default.autoApply=true -Ddb.default.driver=org.postgresql.Driver -Ddb.default.url=${DATABASE_URL}
+web: target/universal/stage/bin/lostandfound -Dplay.crypto.secret=">STN7YMCEwmw>nvYPkmoJV0LFeTv[9lcBRBI9Vxxhm_[QJwJELb7/:dpgTcKp5Ba" -Dhttp.port=${PORT} -Dplay.evolutions.db.default.autoApply=true -Ddb.default.driver=org.postgresql.Driver -Ddb.default.url=${DATABASE_URL}
