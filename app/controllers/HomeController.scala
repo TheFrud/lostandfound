@@ -344,13 +344,22 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
     request.body.file("img").map {
       picture => {
 
+        // Check environment (local or production?)
+        val inProduction = dao.AppStringResources.inProduction.get
+        val environment = dao.AppStringResources.environment.get
+
         // Create random number in filename
         val randomGenerator = new Random()
         val cleanedFileName = picture.filename.replaceAll("[^a-zA-Z0-9.-]", "_")
         val filename = randomGenerator.nextLong() + "_" + cleanedFileName
 
         // TMP STUFF
-        val tmpimagefolder = "tmp/"
+        val tmpimagefolder = if(inProduction){
+          "/tmp/"
+        } else {
+          "tmp/"
+        }
+
         val tmpimagepath = tmpimagefolder + filename
 
         // REAL STUFF
@@ -364,12 +373,6 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
         picture.ref.moveTo(imageFile)
 
         println("DEBUG: 1")
-
-        // Check environment (local or production?)
-        val inProduction = dao.AppStringResources.inProduction.get
-        val environment = dao.AppStringResources.environment.get
-
-        println("DEBUG: 2")
 
         // Setup Image Manipulation stuff
         implicit val writer = JpegWriter().withCompression(50)
