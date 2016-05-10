@@ -343,6 +343,8 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
     println(request.body)
     request.body.file("img").map {
       picture => {
+
+        // Create random number in filename
         val randomGenerator = new Random()
         val cleanedFileName = picture.filename.replaceAll("[^a-zA-Z0-9.-]", "_")
         val filename = randomGenerator.nextLong() + "_" + cleanedFileName
@@ -399,8 +401,12 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
 
         println("DEBUG: 4")
 
-        // Save file
-        val out = Image.fromStream(in).fit(300, 300).overlay(scrimage).output(new File(imgpath)) // output stream
+        // Save file locally if not in production
+        if(inProduction) {
+          val out = Image.fromStream(in).fit(300, 300).overlay(scrimage).output(new File(tmpimagepath)) // output stream
+        } else {
+          val out = Image.fromStream(in).fit(300, 300).overlay(scrimage).output(new File(imgpath))
+        }
 
         println("DEBUG: 5")
 
@@ -414,7 +420,7 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
           val mybucket = s3.bucket("lostandfound-testbucket2")
           val b = mybucket.get
           println("DEBUG: 6")
-          b.put(imgpath, new java.io.File(imgpath))
+          b.put(tmpimagepath, new java.io.File(imgpath))
           println("DEBUG: 7")
         }
 
