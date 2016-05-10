@@ -420,7 +420,7 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
           val mybucket = s3.bucket("lostandfound-testbucket2")
           val b = mybucket.get
           println("DEBUG: 6")
-          b.put(tmpimagepath, new java.io.File(imgpath))
+          b.put(tmpimagepath, new java.io.File(tmpimagepath))
           println("DEBUG: 7")
         }
 
