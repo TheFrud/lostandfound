@@ -346,7 +346,7 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
         val randomGenerator = new Random()
         val cleanedFileName = picture.filename.replaceAll("[^a-zA-Z0-9.-]", "_")
         val filename = randomGenerator.nextLong() + "_" + cleanedFileName
-        val imagefolder = "app/assets/images/annons_imgs/"
+        val imagefolder = "tmp/assets/images/annons_imgs/"
         val imagepath = imagefolder + filename
 
         val imageFile = new java.io.File(imagepath)
