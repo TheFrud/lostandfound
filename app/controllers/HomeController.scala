@@ -346,10 +346,19 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
         val randomGenerator = new Random()
         val cleanedFileName = picture.filename.replaceAll("[^a-zA-Z0-9.-]", "_")
         val filename = randomGenerator.nextLong() + "_" + cleanedFileName
-        val imagefolder = "tmp/assets/images/annons_imgs/"
-        val imagepath = imagefolder + filename
 
-        val imageFile = new java.io.File(imagepath)
+        // TMP STUFF
+        val tmpimagefolder = "tmp/"
+        val tmpimagepath = tmpimagefolder + filename
+
+        // REAL STUFF
+        val imgfolder = "app/assets/images/annons_imgs/"
+        val imgpath = imgfolder + filename
+
+        // OVERLAY
+        val imageoverlayFolder = "app/assets/images/image_overlay/"
+
+        val imageFile = new java.io.File(tmpimagepath)
         picture.ref.moveTo(imageFile)
 
         println("DEBUG: 1")
@@ -373,14 +382,14 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
           println("DEBUG: 222")
           // Fetch overlay image from server
           // Adding the environment variable to the path
-          println(environment+"/"+imagefolder + "image_overlay.png")
+          println(environment+"/"+imageoverlayFolder + "image_overlay.png")
           // ImageIO.read(new File(environment+"/"+imagefolder + "image_overlay.png"))
-          ImageIO.read(new URL(environment+"/"+imagefolder + "image_overlay.png").openStream())
+          ImageIO.read(new URL(environment+"/"+imageoverlayFolder + "image_overlay.png").openStream())
         } else {
 
           // Fetch overlay image locally
           // No need to add the environment variable to the path
-          ImageIO.read(new File(imagefolder + "image_overlay.png"))
+          ImageIO.read(new File(imageoverlayFolder + "image_overlay.png"))
         }
 
         println("DEBUG: 3")
@@ -391,7 +400,7 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
         println("DEBUG: 4")
 
         // Save file
-        val out = Image.fromStream(in).fit(300, 300).overlay(scrimage).output(new File(imagepath)) // output stream
+        val out = Image.fromStream(in).fit(300, 300).overlay(scrimage).output(new File(imgpath)) // output stream
 
         println("DEBUG: 5")
 
@@ -405,7 +414,7 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
           val mybucket = s3.bucket("lostandfound-testbucket2")
           val b = mybucket.get
           println("DEBUG: 6")
-          b.put(imagepath, new java.io.File(imagepath))
+          b.put(imgpath, new java.io.File(imgpath))
           println("DEBUG: 7")
         }
 
