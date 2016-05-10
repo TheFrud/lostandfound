@@ -130,7 +130,7 @@ fileSelect.onchange = function(event) {
 				var environmentPath = document.getElementById("environmentPath");
 
 
-				var contentString = "<img class='media-object img-rounded' src='"+environmentPath+"/assets/images/annons_imgs/"+xhr.responseText+"' alt='...'><br>";
+				var contentString = "<img class='media-object img-rounded' src='"+environmentPath.innerHTML+"/assets/images/annons_imgs/"+xhr.responseText+"' alt='...'><br>";
 				
 				var server_success_msg = "Bild uppladdad!";
 				uploaded_image_div.innerHTML = contentString;
