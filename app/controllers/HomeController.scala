@@ -356,6 +356,8 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
         // TMP STUFF
         val tmpimagefolder = if(inProduction){
           "/tmp/"
+          // !!!
+          // if inProduction BUT on Windows -> "tmp/"
         } else {
           "tmp/"
         }

@@ -13,6 +13,7 @@ $(".imgLiquidFill").imgLiquid();
 // Change to annonser-page
 $(window).on( "swiperight", function( event ) {
 	const url = jsRoutes.controllers.HomeController.index();
+	console.log(url)
 	window.location.href = url.url;
 });
 },{"./init_page":2}],2:[function(require,module,exports){
