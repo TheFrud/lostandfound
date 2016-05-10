@@ -350,7 +350,7 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
         val filename = randomGenerator.nextLong() + "_" + cleanedFileName
 
         // TMP STUFF
-        val tmpimagefolder = "/tmp/"
+        val tmpimagefolder = "tmp/"
         val tmpimagepath = tmpimagefolder + filename
 
         // REAL STUFF
@@ -402,16 +402,20 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
         println("DEBUG: 4")
 
         // Save file locally if not in production
-        if(inProduction) {
-          val out = Image.fromStream(in).fit(300, 300).overlay(scrimage).output(new File(tmpimagepath)) // output stream
+        val out = if(inProduction) {
+          Image.fromStream(in).fit(300, 300).overlay(scrimage).output(new File(tmpimagepath)) // output stream
         } else {
-          val out = Image.fromStream(in).fit(300, 300).overlay(scrimage).output(new File(imgpath))
+          Image.fromStream(in).fit(300, 300).overlay(scrimage).output(new File(imgpath))
         }
+
+
+
 
         println("DEBUG: 5")
 
         // Are we in production?
         // If we are not, we are done here.
+
         if(inProduction){
           // If true (in production)
 
@@ -420,9 +424,10 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
           val mybucket = s3.bucket("lostandfound-testbucket2")
           val b = mybucket.get
           println("DEBUG: 6")
-          b.put(tmpimagepath, new java.io.File(tmpimagepath))
+          b.put(imgpath, out)
           println("DEBUG: 7")
         }
+
 
         Ok(filename)
       }
