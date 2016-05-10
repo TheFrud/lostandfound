@@ -480,7 +480,8 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
       JavaScriptReverseRouter("jsRoutes")(
         routes.javascript.HomeController.getAnnonser,
         routes.javascript.HomeController.upload,
-        routes.javascript.HomeController.index
+        routes.javascript.HomeController.index,
+        routes.javascript.HomeController.annonsPage
 
       )
     ).as("text/javascript")

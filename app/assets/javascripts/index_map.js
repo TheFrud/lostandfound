@@ -54,10 +54,13 @@ const addAnnonserToMap = function() {
                     marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');   
                 }
                 
+                var environmentPath = document.getElementById("environmentPath");
+                const annonsPage = jsRoutes.controllers.HomeController.annons();
+
                 var contentString = "<div class='map-info-window'>" +
-                "<h3><a href='http://192.168.1.45:9000/annons/"+item.id+"'>" + item.rubrik + "</a></h3>" + 
+                "<h3><a href='"+annonsPage+"/"+item.id+"'>" + item.rubrik + "</a></h3>" + 
                 "<div class='imgLiquidFill imgLiquid' style='width:50px; height:50px;'>" +
-                "<img class='media-object' src='/assets/images/annons_imgs/"+item.img+"' alt='...'>" +
+                "<img class='media-object' src='"+environmentPath.innerHtml+"/assets/images/annons_imgs/"+item.img+"' alt='...'>" +
                  "</div>" +
                  "<br>" + item.text +
                  "</div>";
