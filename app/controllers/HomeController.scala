@@ -348,7 +348,7 @@ class HomeController @Inject() (annonsDao: AnnonsDAO) extends Controller {
         val filename = randomGenerator.nextLong() + "_" + cleanedFileName
 
         // TMP STUFF
-        val tmpimagefolder = "tmp/"
+        val tmpimagefolder = "/tmp/"
         val tmpimagepath = tmpimagefolder + filename
 
         // REAL STUFF
