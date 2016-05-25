@@ -98,7 +98,7 @@ Nav bar
 }
 
 .navbar-fixed-bottom {
-    bottom: -50;
+    bottom: -55;
 }
 /*
 LOGO
@@ -154,6 +154,18 @@ LOGO
 Index
 */
 
+
+#toggleView {
+  position: absolute;
+  top: 11%;
+  left:50%;
+  transform: translate(-50%,-50%);   
+  border: 50px;
+}
+
+
+
+
 #annonser_heading h2 {
 
 }
@@ -183,6 +195,8 @@ Index
 
 .filterLabel {
     color: white;
+    margin-top: 5px;
+    margin-bottom: 0px;
 }
 
 /*

@@ -3,21 +3,34 @@
 <nav class="navbar navbar-fixed-bottom navbar-light bg-faded" id="nav_bar_bottom">
     @helper.form(action = routes.HomeController.search()) {
 
-    <div class="row">
+
+
+
+        <span id="matches_text">Träffar: @annonser.length</span>
+        <button type="button" id="toggleView" class="btn btn-warning"><i class="fa fa-globe"></i>Kartvy</button>
+
+
+        @**
+        <div class="row">
         <div class="col-xs-4">
-            <span id="matches_text">Träffar: @annonser.length</span>
+        <span id="matches_text">Träffar: @annonser.length</span>
         </div>
-        <div class="col-xs-6">
-                <button type="button" id="toggleView" class="btn btn-warning"><i class="fa fa-globe"></i>Kartvy</button>
+        <div class="col-xs-2">
+        <button type="button" id="toggleView" class="btn btn-warning"><i class="fa fa-globe"></i>Kartvy</button>
         </div>
-    </div>
+        <div class="col-xs-4">
+
+        </div>
+
+        </div>
+            *@
 
             <!-- Collapsed content-->
+
         <div class="row" id="filter_panel">
             <div class="col-xs-3">
                 <fieldset class="form-group">
                     <label class="filterLabel" for="typ">Typ</label>
-                    <small class="text-muted"></small>
                     @helper.select(
                         field = searchAnnonsForm("typ"),
                         options = Seq(
@@ -26,15 +39,15 @@
                             "Upphittat" -> "Upphittat"
                         ),
                         'default -> "Välj typ",
-                        'class -> "c-select",
+                        'class -> "form-control",
                         '_label -> null,
                         'id -> "typ"
                     )
-                </fieldset>
-            </div>
+                    </fieldset>
 
+            </div>
             <div class="col-xs-3">
-                <div class="input-group">
+
 
                         <!-- Kategori -->
                     <fieldset class="form-group">
@@ -62,7 +75,7 @@
                         )
                     </fieldset>
 
-                </div>
+
             </div>
             <div class="col-xs-3">
 
@@ -103,9 +116,9 @@
 
             </div>
 
-
+            <button id="executeSearch" class="btn btn-secondary" type="submit" hidden>Should be hidden</button>
         </div>
-        <button id="executeSearch" class="btn btn-secondary" type="submit" hidden>Should be hidden</button>
+
 
     <!-- Search input without search bar -->
 

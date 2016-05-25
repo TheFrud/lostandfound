@@ -18,7 +18,7 @@
             @if(annons.typ.equals("Borttappat")){
                 <span class="label label-danger">Borttappat</span>
             }
-            <em>Lades in: @utilities.DateFormatter.format(annons.posted)</em>
+            <em>@utilities.DateFormatter.format(annons.posted)</em>
             <br>
                 <div class="annons_text">
             @annons.text
